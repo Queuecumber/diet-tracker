@@ -1,8 +1,13 @@
 <?php
+include('utils/databaseSetup.php');
 
 function checkUserLogin($uname, $pw)
 {
-    $query = "select * from users where email='" . $uname . "' and password = '" . + $pw . "'";
+    global $mysqli;
+
+    $hashPass = md5($pw);
+
+    $query = "select * from user where email='" . $uname . "' and password='" . $hashPass . "'";
     $res = $mysqli->query($query);
 
     if($res)
@@ -20,25 +25,32 @@ function checkUserLogin($uname, $pw)
 
 session_start();
 
-if(isset(_SESSION['user']))
+if(isset($_SESSION['user']))
 {
     header("Location: index.php");
 }
 
-$uname = $_POST['user'];
-$pw = $_POST['pw'];
-
-$errorMessage = '';
-
-if(checkUserLogin($uname, $pw))
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user']) && isset($_POST['pw']))
 {
-    session_start();
-    $_SESSION['user'] = $uname;
-    header("Location: index.php");
+    $uname = $_POST['user'];
+    $pw = $_POST['pw'];
+
+    $errorMessage = '';
+
+    if(checkUserLogin($uname, $pw))
+    {
+        session_start();
+        $_SESSION['user'] = $uname;
+        header("Location: index.php");
+    }
+    else
+    {
+        $errorMessage = "Invalid email/password";
+    }
 }
 else
 {
-    $errorMessage = "Invalid email/password";
+    $errorMessage = '';
 }
 
 ?>
@@ -52,12 +64,13 @@ else
         <form action="login.php" method="POST">
             <label for="user">Email</label>
             <input type="text" name="user"/>
-
+            <br/>
             <label for="pw">Password</label>
             <input type="password" name="pw">
-
+            <br/>
             <button type="submit">Log In</button>
-            <output for="user pw" value="<?= $errorMessage ?>"></output>
+            <br/>
+            <output name="response" for="user pw"><?= $errorMessage ?></output>
         </form>
     </body>
 </html>
