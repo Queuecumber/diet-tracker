@@ -12,5 +12,8 @@ include('utils/checkUser.php');
     </head>
     <body>
         <h1> Welcome <?= $user ?> </h1>
+        <form action="logOff.php" method="POST">
+            <button type="submit">Log Off</button>
+        </form>
     </body>
 </html>
