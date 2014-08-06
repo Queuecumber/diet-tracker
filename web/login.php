@@ -72,5 +72,6 @@ else
             <br/>
             <output name="response" for="user pw"><?= $errorMessage ?></output>
         </form>
+        <a href="register.php">Register</a>
     </body>
 </html>
