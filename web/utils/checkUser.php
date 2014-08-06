@@ -6,5 +6,9 @@ if(!(isset($_SESSION['user'])))
 {
     header("Location: login.php");
 }
+else
+{
+    $user = $_SESSION['user'];
+}
 
 ?>
