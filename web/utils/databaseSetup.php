@@ -40,15 +40,15 @@ function composeJoins($desc)
 
     for($i = 1; $i < count($desc); $i++)
     {
-        $clause = $clause . " inner join " . $desc[i][0];
+        $clause = $clause . " inner join " . $desc[$i][0];
 
-        if(count($desc[i]) > 2)
+        if(count($desc[$i]) > 2)
         {
-            $clause = $clause . " on " . $desc[i][1] . '=' . $desc[i][2];
+            $clause = $clause . " on " . $desc[$i][1] . '=' . $desc[$i][2];
         }
         else
         {
-            $clause = $clause . " using (" . $desc[i][1] . ")";
+            $clause = $clause . " using (" . $desc[$i][1] . ")";
         }
     }
 
@@ -82,7 +82,35 @@ function querySymbolic($tableName, $params)
         $query = $query . $op . $clause;
         $op = ' and ';
     }
-    
+
+    return $mysqli->query($query);
+}
+
+function insertSymbolic($table, $values)
+{
+    global $mysqli;
+
+    $query = "insert into " . $table . " ";
+    $cols = '(';
+    $vals = '(';
+
+    $sep = '';
+    foreach($values as $c => $v)
+    {
+        if(is_string($v))
+            $v = "'" . $v . "'";
+
+        $cols = $cols . $sep . $c;
+        $vals = $vals . $sep . $v;
+
+        $sep = ', ';
+    }
+
+    $cols = $cols . ')';
+    $vals = $vals . ')';
+
+    $query = $query . $cols . " values " . $vals;
+
     return $mysqli->query($query);
 }
 
@@ -104,7 +132,7 @@ function extractSingle($res, $remove = [])
         }
     }
 
-    return $res;
+    return false;
 }
 
 function extractArray($res, $remove = [])
@@ -128,7 +156,7 @@ function extractArray($res, $remove = [])
         return $arr;
     }
 
-    return $res;
+    return false;
 }
 
 ?>
