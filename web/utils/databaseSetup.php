@@ -33,9 +33,34 @@ function composeComplex($val)
     return $res;
 }
 
+function composeJoins($desc)
+{
+    $initialTable = $desc[0];
+    $clause = $initialTable;
+
+    for($i = 1; $i < count($desc); $i++)
+    {
+        $clause = $clause . " inner join " . $desc[i][0];
+
+        if(count($desc[i]) > 2)
+        {
+            $clause = $clause . " on " . $desc[i][1] . '=' . $desc[i][2];
+        }
+        else
+        {
+            $clause = $clause . " using (" . $desc[i][1] . ")";
+        }
+    }
+
+    return $clause;
+}
+
 function querySymbolic($tableName, $params)
 {
     global $mysqli;
+
+    if(is_array($tableName))
+        $tableName = composeJoins($tableName);
 
     $query = "select * from " . $tableName . " where ";
     $op = '';
@@ -47,7 +72,7 @@ function querySymbolic($tableName, $params)
         $clause = '';
         if(is_array($val))
         {
-            $clause = composeComplex($val);
+            $clause = $colname . ' ' . composeComplex($val);
         }
         else
         {
@@ -57,7 +82,7 @@ function querySymbolic($tableName, $params)
         $query = $query . $op . $clause;
         $op = ' and ';
     }
-
+    
     return $mysqli->query($query);
 }
 
