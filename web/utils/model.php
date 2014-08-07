@@ -32,6 +32,17 @@ function getMeal($meal_id)
 
 function getMealInfo($meal_id)
 {
+    $res = querySymbolic([
+        'meal',
+        ['food_report', 'meal_id', 'meal'],
+        ['food', 'food', 'ndb_no']
+    ], ['meal_id' => $meal_id]);
+
+    return extractArray($res);
+}
+
+function findFoods($search)
+{
     
 }
 
