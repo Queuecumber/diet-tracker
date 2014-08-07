@@ -8,7 +8,7 @@ if(!(isset($_SESSION['user'])))
 }
 else
 {
-    $user = $_SESSION['user'];
+    $seshUser = $_SESSION['user'];
 }
 
 ?>
