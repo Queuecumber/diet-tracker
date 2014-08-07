@@ -1,6 +1,5 @@
 <?php
 
-include('utils/databaseSetup.php');
 include('utils/checkUser.php');
 include('utils/model.php');
 
