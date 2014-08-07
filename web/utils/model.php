@@ -1,28 +1,10 @@
 <?php
+include('databaseSetup.php');
 
 function getUser($email)
 {
-    global $mysqli;
-
-    $query = "select * from user where email='" . $email . "'";
-    $res = $mysqli->query($query);
-
-    if($res)
-    {
-        $nrows = $res->num_rows;
-
-        if($nrows > 0)
-        {
-            $res->data_seek(0);
-            $row = $res->fetch_assoc();
-
-            unset($row['password']);
-
-            return $row;
-        }
-    }
-
-    return $res;
+    $res = querySymbolic('user', ['email' => $email]);
+    return extractSingle($res, ['password']);
 }
 
 function getMealsForUser($email, $date)
@@ -33,24 +15,24 @@ function getMealsForUser($email, $date)
     $dayStart = $dayString . " 00:00:00";
     $dayEnd = $dayString . " 23:59:59";
 
-    $query = "select * from meal where user='" . $email . "' and date between '" . $dayStart . "' and '" . $dayEnd . "'";
-    $res = $mysqli->query($query);
+    $res = querySymbolic('meal', [
+        'email' => $email,
+        'date' => ['between', $dayStart, $dayEnd]
+    ]);
 
-    if($res)
-    {
-        $mealArray = array();
+    return extractArray($res);
+}
 
-        $nrows = $res->num_rows;
-        for($i = 0; $i < $nrows; $i++)
-        {
-            $res->data_seek($i);
-            $mealArray[] = $res->fetch_assoc();
-        }
 
-        return $mealArray;
-    }
+function getMeal($meal_id)
+{
+    $res = querySymbolic('meal', ['meal_id' => $meal_id]);
+    return extractSingle($res);
+}
 
-    return $res;
+function getMealInfo($meal_id)
+{
+    
 }
 
 ?>
