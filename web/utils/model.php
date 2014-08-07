@@ -1,5 +1,7 @@
 <?php
 include('databaseSetup.php');
+include('scrape.php');
+include('usdaExtract.php');
 
 function getUser($email)
 {
@@ -9,8 +11,6 @@ function getUser($email)
 
 function getMealsForUser($email, $date)
 {
-    global $mysqli;
-
     $dayString = date('Y-m-d', $date);
     $dayStart = $dayString . " 00:00:00";
     $dayEnd = $dayString . " 23:59:59";
@@ -22,7 +22,6 @@ function getMealsForUser($email, $date)
 
     return extractArray($res);
 }
-
 
 function getMeal($meal_id)
 {
@@ -43,7 +42,45 @@ function getMealInfo($meal_id)
 
 function findFoods($search)
 {
-    
+    return extractSearch($search);
+}
+
+function createMeal($email)
+{
+    global $mysqli;
+
+    $dayString = date('Y-m-d H:i:s');
+
+    insertSymbolic('meal', [
+        'date' => $dayString,
+        'amount' => 0,
+        'user' => $email
+    ]);
+
+    $iid = $mysqli->insert_id;
+
+    $res = querySymbolic('meal', [
+        'meal_id' => $iid
+    ]);
+
+    return extractSingle($res);
+}
+
+function addFoodToMeal($meal_id, $ndb_no)
+{
+    $res = querySymbolic('food', [
+        'ndb_no' => $ndb_no
+    ]);
+
+    $food = extractSingle($res);
+
+    if(!$food)
+    {
+        $food = extractFood($ndb_no);
+        insertSymbolic('food', $food);
+
+        var_dump($food);
+    }
 }
 
 ?>
