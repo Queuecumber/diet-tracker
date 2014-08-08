@@ -23,6 +23,15 @@ function getMealsForUser($email, $date)
     return extractArray($res);
 }
 
+function getWeightsForUser($email)
+{
+    $res = querySymbolic('weight_measurement', [
+        'user' => $email
+    ], 'order by date desc');
+
+    return extractArray($res);
+}
+
 function getMeal($meal_id)
 {
     $res = querySymbolic('meal', ['meal_id' => $meal_id]);
