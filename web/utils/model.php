@@ -16,7 +16,7 @@ function getMealsForUser($email, $date)
     $dayEnd = $dayString . " 23:59:59";
 
     $res = querySymbolic('meal', [
-        'email' => $email,
+        'user' => $email,
         'date' => ['between', $dayStart, $dayEnd]
     ]);
 
