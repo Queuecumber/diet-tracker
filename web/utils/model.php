@@ -68,6 +68,8 @@ function createMeal($email)
 
 function addFoodToMeal($meal_id, $ndb_no)
 {
+    $meal_id = intval($meal_id);
+
     $res = querySymbolic('food', [
         'ndb_no' => $ndb_no
     ]);
@@ -78,9 +80,22 @@ function addFoodToMeal($meal_id, $ndb_no)
     {
         $food = extractFood($ndb_no);
         insertSymbolic('food', $food);
-
-        var_dump($food);
     }
+
+    $food_report = [
+        'metric' => 'serving',
+        'value' => 1,
+        'calories' => 500,
+        'meal'  => $meal_id,
+        'food' => $ndb_no
+    ];
+
+    insertSymbolic('food_report', $food_report);
+
+    $meal = extractSingle(querySymbolic('meal', ['meal_id' => $meal_id]));
+    $meal['amount'] += $food_report['calories'];
+
+    updateSymbolic('meal', ['meal_id' => $meal_id], ['amount' => $meal['amount']]);
 }
 
 ?>
