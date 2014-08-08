@@ -5,6 +5,7 @@ include('utils/model.php');
 
 $user = getUser($seshUser);
 $meals = getMealsForUser($user['email'], time());
+$weight = getWeightsForUser($user['email']);
 
 $calTotal = 0;
 foreach($meals as $m)
@@ -27,6 +28,23 @@ foreach($meals as $m)
         <main>
             <article>
                 <h2> You have eaten <?= $calTotal ?> calories of your <?= $user['calorie_target'] ?> calories today </h2>
+            </article>
+            <article>
+                <?php
+                    if(count($weight) > 0)
+                    {
+                        ?>
+                        <h2> Your last recorded weight was <?= $weight['amount'] ?>lbs </h2>
+                        <a href="#">Update</a>
+                        <?php
+                    }
+                    else
+                    {
+                        ?>
+                        <a href="#">Please set your initial weight</a>
+                        <?php
+                    }
+                ?>
             </article>
             <article>
                 <h2> Today's Meals (<?= date("D, M jS") ?>)</h2>
