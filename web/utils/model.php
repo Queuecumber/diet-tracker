@@ -32,6 +32,20 @@ function getWeightsForUser($email)
     return extractArray($res);
 }
 
+function addWeightForUser($email, $amount)
+{
+    $amount = floatval($amount);
+    $dayString = date('Y-m-d H:i:s');
+
+    $weight = [
+        'date' => $dayString,
+        'amount' => $amount,
+        'user' => $email
+    ];
+
+    insertSymbolic('weight_measurement', $weight);
+}
+
 function getMeal($meal_id)
 {
     $res = querySymbolic('meal', ['meal_id' => $meal_id]);
