@@ -4,7 +4,13 @@ include('utils/checkUser.php');
 include('utils/model.php');
 
 $user = getUser($seshUser);
-$meals = getMealsForUser($user['email'], time())
+$meals = getMealsForUser($user['email'], time());
+
+$calTotal = 0;
+foreach($meals as $m)
+{
+    $calTotal += floatval($m['amount']);
+}
 
 ?>
 
@@ -20,11 +26,49 @@ $meals = getMealsForUser($user['email'], time())
         </header>
         <main>
             <article>
-                <h2> You have eaten <?= 0 ?> calories of your <?= $user['calorie_target'] ?> calories today </h2>
+                <h2> You have eaten <?= $calTotal ?> calories of your <?= $user['calorie_target'] ?> calories today </h2>
             </article>
             <article>
-                <h2> Today's Meals </h2>
+                <h2> Today's Meals (<?= date("D, M jS") ?>)</h2>
                 <a href="addMeal.php">Add Meal</a>
+
+                <?php
+
+                    foreach($meals as $m)
+                    {
+                        $info = getMealInfo($m['meal_id']);
+
+                        ?>
+
+                        <section>
+
+                            <h3> <?= date("H:i:s", strtotime($m['date'])) ?> </h3>
+
+                            <?php
+
+                            foreach($info as $i)
+                            {
+                                ?>
+
+                                <strong> <?= $i['name'] ?>: </strong> <?= $i['calories'] ?>c <br/>
+
+                                <?php
+                            }
+
+                            ?>
+
+                            <strong> Total Calories: </strong> <?= $m['amount'] ?>
+
+                            <?php
+
+                            ?>
+
+                        </section>
+
+                        <?php
+                    }
+
+                ?>
 
             </article>
         </main>
