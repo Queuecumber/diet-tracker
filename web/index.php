@@ -34,14 +34,14 @@ foreach($meals as $m)
                     if(count($weight) > 0)
                     {
                         ?>
-                        <h2> Your last recorded weight was <?= $weight['amount'] ?>lbs </h2>
-                        <a href="#">Update</a>
+                        <h2> Your last recorded weight was <?= $weight[0]['amount'] ?>lbs </h2>
+                        <a href="addWeight.php">Update</a>
                         <?php
                     }
                     else
                     {
                         ?>
-                        <a href="#">Please set your initial weight</a>
+                        <a href="addWeight.php">Please set your initial weight</a>
                         <?php
                     }
                 ?>
