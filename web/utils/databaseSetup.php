@@ -55,7 +55,7 @@ function composeJoins($desc)
     return $clause;
 }
 
-function querySymbolic($tableName, $params)
+function querySymbolic($tableName, $params, $suffix = '')
 {
     global $mysqli;
 
@@ -82,6 +82,8 @@ function querySymbolic($tableName, $params)
         $query = $query . $op . $clause;
         $op = ' and ';
     }
+
+    $query = $query . ' ' . $suffix;
 
     return $mysqli->query($query);
 }
@@ -151,7 +153,7 @@ function updateSymbolic($table, $where, $values)
         $query = $query . $sep . $clause;
         $sep = ' and ';
     }
-    
+
     return $mysqli->query($query);
 }
 
