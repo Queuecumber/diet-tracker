@@ -114,6 +114,47 @@ function insertSymbolic($table, $values)
     return $mysqli->query($query);
 }
 
+function updateSymbolic($table, $where, $values)
+{
+    global $mysqli;
+
+    $query = "update " . $table . " set ";
+
+    $sep = '';
+    foreach($values as $c => $v)
+    {
+        if(is_string($v))
+            $v = "'" . $v . "'";
+
+        $query = $query . $sep . $c . '=' . $v;
+        $sep = ',';
+    }
+
+    $query = $query . ' where ';
+
+    $sep = '';
+    foreach($where as $c => $v)
+    {
+        if(is_string($v))
+            $v = "'" . $v . "'";
+
+        $clause = '';
+        if(is_array($v))
+        {
+            $clause = $c . ' ' . composeComplex($v);
+        }
+        else
+        {
+            $clause = $c . '=' . $v;
+        }
+
+        $query = $query . $sep . $clause;
+        $sep = ' and ';
+    }
+    
+    return $mysqli->query($query);
+}
+
 function extractSingle($res, $remove = [])
 {
     if($res)
