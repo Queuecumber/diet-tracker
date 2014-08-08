@@ -27,10 +27,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
         $meal = createMeal($user['email']);
     }
 
-    var_dump($meal);
-
     addFoodToMeal($meal['meal_id'], $newFood);
-//    $mealInfo = getMealInfo($_POST['meal_id']);
+
+    $meal = getMeal($meal['meal_id']);
+    $mealInfo = getMealInfo($meal['meal_id']);
 }
 
 ?>
@@ -50,6 +50,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                         <label for="food_to_search">Food Name</label>
                         <input type="text" name="food_to_search" value="<?= $food ?>"/>
                         <button type="submit">Search</button>
+
+                        <?php
+
+                        if(isset($meal))
+                        {
+                            ?>
+
+                            <input type="hidden" name="meal_id" value="<?= $meal['meal_id'] ?>"/>
+
+                            <?php
+                        }
+
+                        ?>
+
                     </form>
                 </section>
                 <section>
@@ -90,17 +104,35 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                 <?php
                     if(isset($mealInfo))
                     {
-                        foreach($mealInfo as $info)
-                        {
-                            ?>
+                        ?>
 
-                            <strong> <?= $info['name'] ?>: </strong> <?= $info['calories'] ?>c <br/>
+                        <section>
 
                             <?php
-                        }
+
+                            foreach($mealInfo as $info)
+                            {
+                                ?>
+
+                                <strong> <?= $info['name'] ?>: </strong> <?= $info['calories'] ?>c <br/>
+
+                                <?php
+                            }
+
+                            ?>
+
+                        </section>
+                        <section>
+                            <strong> Total Calories: </strong> <?= $meal['amount'] ?>
+                        </section>
+
+                        <?php
                     }
                 ?>
             </article>
         </main>
+        <footer>
+            <a href="index.php">Done</a>
+        </footer>
     </body>
 </html>
