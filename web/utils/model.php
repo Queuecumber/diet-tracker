@@ -89,10 +89,8 @@ function createMeal($email)
     return extractSingle($res);
 }
 
-function addFoodToMeal($meal_id, $ndb_no)
+function getFood($ndb_no)
 {
-    $meal_id = intval($meal_id);
-
     $res = querySymbolic('food', [
         'ndb_no' => $ndb_no
     ]);
@@ -105,10 +103,35 @@ function addFoodToMeal($meal_id, $ndb_no)
         insertSymbolic('food', $food);
     }
 
+    return $food;
+}
+
+function getFoodMetrics($ndb_no)
+{
+    $res = querySymbolic('food', [
+        'ndb_no' => $ndb_no
+    ]);
+
+    $food = extractSingle($res);
+
+    return extractMetrics($food);
+}
+
+function addFoodToMeal($meal_id, $ndb_no, $amount, $metric)
+{
+    $meal_id = intval($meal_id);
+    $res = querySymbolic('food', [
+        'ndb_no' => $ndb_no
+    ]);
+
+    $food = extractSingle($res);
+
+    $cals = extractCalories($food, $metric, $amount);
+
     $food_report = [
-        'metric' => 'serving',
-        'value' => 1,
-        'calories' => 500,
+        'metric' => $metric,
+        'value' => $amount,
+        'calories' => $cals,
         'meal'  => $meal_id,
         'food' => $ndb_no
     ];
