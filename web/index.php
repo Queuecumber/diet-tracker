@@ -18,7 +18,7 @@ foreach($meals as $m)
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Diet Tracker</title>
+        <title>Daily Report</title>
 
         <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
         <script src="lib/jquery-2.1.1.min.js"></script>
