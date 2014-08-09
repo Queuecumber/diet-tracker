@@ -25,8 +25,8 @@ create table frequently_eats
     food int not null,
     count int,
     constraint pk_frequently_eats primary key (user, food),
-    foreign key (user) references user(email),
-    foreign key (food) references food(ndb_no)
+    foreign key (user) references user(email) on delete cascade,
+    foreign key (food) references food(ndb_no) on delete cascade
 );
 
 create table weight_measurement
@@ -34,7 +34,7 @@ create table weight_measurement
     date datetime not null,
     amount real not null,
     user varchar(255) not null,
-    foreign key (user) references user(email)
+    foreign key (user) references user(email) on delete cascade
 );
 
 create table meal
@@ -44,7 +44,7 @@ create table meal
     amount real not null,
     user varchar(255) not null,
     primary key(meal_id),
-    foreign key (user) references user(email)
+    foreign key (user) references user(email) on delete cascade
 );
 
 create table food_report
@@ -54,6 +54,6 @@ create table food_report
     calories real not null,
     meal int not null,
     food int not null,
-    foreign key (meal) references meal(meal_id),
-    foreign key (food) references food(ndb_no)
+    foreign key (meal) references meal(meal_id) on delete cascade,
+    foreign key (food) references food(ndb_no) on delete cascade
 );
