@@ -21,13 +21,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_search']))
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
 {
     $newFood = $_POST['food_to_add'];
+    $amount = $_POST['amount'];
+    $metric = $_POST['metric'];
 
-    if(!isset($meal))
-    {
-        $meal = createMeal($user['email']);
-    }
-
-    addFoodToMeal($meal['meal_id'], $newFood);
+    addFoodToMeal($meal['meal_id'], $newFood, $amount, $metric);
 
     $meal = getMeal($meal['meal_id']);
     $mealInfo = getMealInfo($meal['meal_id']);
@@ -74,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                             {
                                 ?>
 
-                                <form action="addMeal.php" method="POST">
+                                <form action="addFood.php" method="POST">
                                     <button type="submit">Add</button>
                                     <label for="food_to_add"><?= $f['name'] ?> </label>
                                     <input type="hidden" name="food_to_add" value="<?= $f['ndb_no'] ?>"/>
