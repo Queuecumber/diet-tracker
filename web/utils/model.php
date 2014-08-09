@@ -9,6 +9,11 @@ function getUser($email)
     return extractSingle($res, ['password']);
 }
 
+function changeTargetForUser($email, $target)
+{
+    updateSymbolic('user', ['email' => $email], ['calorie_target' => $target]);
+}
+
 function getMealsForUser($email, $date)
 {
     $dayString = date('Y-m-d', $date);

@@ -28,6 +28,7 @@ foreach($meals as $m)
         <main>
             <article>
                 <h2> You have eaten <?= $calTotal ?> calories of your <?= $user['calorie_target'] ?> calories today </h2>
+                <a href="addTarget.php">Update Target</a>
             </article>
             <article>
                 <?php
@@ -35,7 +36,7 @@ foreach($meals as $m)
                     {
                         ?>
                         <h2> Your last recorded weight was <?= $weight[0]['amount'] ?>lbs </h2>
-                        <a href="addWeight.php">Update</a>
+                        <a href="addWeight.php">Update Weight</a>
                         <?php
                     }
                     else
