@@ -19,77 +19,133 @@ foreach($meals as $m)
 <html>
     <head>
         <title>Diet Tracker</title>
+
+        <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+        <script src="lib/jquery-2.1.1.min.js"></script>
+        <script src="lib/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+
+        <style>
+
+        .meal-report
+        {
+            display: inline-block;
+
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .meal-report table td
+        {
+            max-width: 300px;
+            text-overflow: ellipsis;
+        }
+
+        .target-alert
+        {
+            display: inline-block;
+
+            margin-left: 20px;
+        }
+
+        </style>
+
     </head>
     <body>
         <header>
-            <h1> Welcome <?= $user['name'] ?> </h1>
-            <a href="logOff.php">Log Off</a>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#dt-navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand">Diet Tracker</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="dt-navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="index.php">Daily Report</a></li>
+                            <li><a href="addMeal.php">Add Meal</a></li>
+                            <li><a href="addWeight.php">Record Weight</a></li>
+                            <li><a href="addTarget.php">Update Calorie Target</a></li>
+                            <li><a href="#">History</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=$user['name']?><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Account Settings</a></li>
+                                    <li><a href="logOff.php">Log Off</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </header>
         <main>
-            <article>
-                <h2> You have eaten <?= $calTotal ?> calories of your <?= $user['calorie_target'] ?> calories today </h2>
-                <a href="addTarget.php">Update Target</a>
-            </article>
-            <article>
-                <?php
-                    if(count($weight) > 0)
-                    {
-                        ?>
-                        <h2> Your last recorded weight was <?= $weight[0]['amount'] ?>lbs </h2>
-                        <a href="addWeight.php">Update Weight</a>
-                        <?php
-                    }
-                    else
-                    {
-                        ?>
-                        <a href="addWeight.php">Please set your initial weight</a>
-                        <?php
-                    }
-                ?>
-            </article>
-            <article>
-                <h2> Today's Meals (<?= date("D, M jS") ?>)</h2>
-                <a href="addMeal.php">Add Meal</a>
+            <h2> Daily Report for <?= date("l, F jS") ?> </h2>
+            <div class="target-alert alert <?php if($calTotal <= $user['calorie_target']) echo "alert-info"; else echo "alert-warning"; ?>">
+                <strong><?= $calTotal ?> / <?= $user['calorie_target'] ?></strong> calories consumed today <a href="addTarget.php" class="alert-link">change your target</a>
+            </div>
+            </p>
 
-                <?php
+            <?php
 
-                    foreach($meals as $m)
-                    {
-                        $info = getMealInfo($m['meal_id']);
+                foreach($meals as $m)
+                {
+                    $info = getMealInfo($m['meal_id']);
 
-                        ?>
+                    ?>
 
-                        <section>
+                    <section class="well meal-report">
 
-                            <h3> <?= date("H:i:s", strtotime($m['date'])) ?> </h3>
+                        <h3> <?= date("H:i:s", strtotime($m['date'])) ?> </h3>
 
-                            <?php
-
-                            foreach($info as $i)
-                            {
-                                ?>
-
-                                <strong> <?= $i['name'] ?>: </strong> <?= $i['calories'] ?>c <br/>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Servings</th>
+                                    <th>Serving Size</th>
+                                    <th>Calories</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
                                 <?php
-                            }
 
-                            ?>
+                                foreach($info as $i)
+                                {
+                                    ?>
 
-                            <strong> Total Calories: </strong> <?= $m['amount'] ?>
+                                    <tr>
+                                        <td><?= $i['name'] ?></td>
+                                        <td><?= $i['value'] ?></td>
+                                        <td><?= $i['metric'] ?></td>
+                                        <td><?= $i['calories'] ?></td>
+                                    </tr>
 
-                            <?php
+                                    <?php
+                                }
 
-                            ?>
+                                ?>
 
-                        </section>
+                            </tbody>
+                        </table>
+
+                        <strong> Total Calories: </strong> <?= $m['amount'] ?>
 
                         <?php
-                    }
 
-                ?>
+                        ?>
 
-            </article>
+                    </section>
+
+                    <?php
+                }
+
+            ?>
         </main>
         <footer>
         </footer>
