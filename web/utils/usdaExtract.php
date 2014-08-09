@@ -61,4 +61,64 @@ function extractFood($ndb_no)
     return $food;
 }
 
+function parseReport($reportString)
+{
+    $rows = str_getcsv($reportString, "\n");
+    $csvArray = [];
+    foreach($rows as $r)
+    {
+        $csvArray[] = str_getcsv($r);
+    }
+
+    return $csvArray;
+}
+
+function extractMetrics($food)
+{
+    $reportUrl = $food['usda_report_url'];
+
+    $csvContent = file_get_contents($reportUrl);
+
+    $csvArray = parseReport($csvContent);
+
+    $metrics = [];
+    for($i = 3; $i < count($csvArray[4]) - 1; $i++)
+    {
+        $metrics[] = trim(str_replace("\""," ",$csvArray[4][$i]));
+    }
+
+    return $metrics;
+}
+
+function extractCalories($food, $metric, $amount)
+{
+    $reportUrl = $food['usda_report_url'];
+    $csvContent = file_get_contents($reportUrl);
+
+    $csvArray = parseReport($csvContent);
+
+    $colNo = 0;
+    for($i = 3; $i < count($csvArray[4]) - 1; $i++)
+    {
+        $m = trim(str_replace("\""," ",$csvArray[4][$i]));
+
+        if($metric == $m)
+        {
+            $colNo = $i;
+            break;
+        }
+    }
+
+    $rowNo = 0;
+    for($i = 0; $i < count($csvArray); $i++)
+    {
+        if($csvArray[$i][0] == "Energy")
+            $rowNo = $i;
+    }
+
+    $calPerServing = floatval($csvArray[$rowNo][$colNo]);
+
+    return floatval($amount) * $calPerServing;
+}
+
 ?>
