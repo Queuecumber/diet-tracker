@@ -109,6 +109,12 @@ function findFoods($search)
     return extractSearch($search);
 }
 
+function findFoodByName($name)
+{
+    $res = querySymbolic('food', ['name' => $name]);
+    return extractSingle($res);
+}
+
 function createMeal($email)
 {
     global $mysqli;

@@ -17,6 +17,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_search']))
 {
     $food = $_POST['food_to_search'];
     $foods = findFoods($food);
+
+    if(!$foods)
+    {
+        $singleFoodMatch = findFoodByName($food);
+
+        if($singleFoodMatch)
+            $foods = [$singleFoodMatch];
+        else
+            $foods = [];
+    }
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))

@@ -10,31 +10,38 @@ function extractSearch($search)
 
     $queryResults = file_get_contents($queryString);
 
-    // Need to find the second <table> element
-    $tableTags = getTagContents($queryResults, 'table');
-    $resultsTable = $tableTags[1];
-
-    // Get the table body
-    $tbody = getTagContents($resultsTable, 'tbody')[0];
-
-    // Split into rows
-    $rows = getTagContents($tbody, 'tr');
-
-    // Make a food-like structure as the DB would return for each row
-    $foods = [];
-    foreach($rows as $row)
+    // Check to see if we had an exact match, if so we can get the food info directly
+    $titleString = getTagContents($queryResults, 'title')[0];
+    if($titleString == 'Foods List')
     {
-        $foodDesc = [];
+        // Need to find the second <table> element
+        $tableTags = getTagContents($queryResults, 'table');
+        $resultsTable = $tableTags[1];
 
-        $cells = getTagContents($row, 'td');
+        // Get the table body
+        $tbody = getTagContents($resultsTable, 'tbody')[0];
 
-        $foodDesc['ndb_no'] = trim(strip_tags($cells[0]));
-        $foodDesc['name'] = trim(strip_tags($cells[1]));
+        // Split into rows
+        $rows = getTagContents($tbody, 'tr');
 
-        $foods[] = $foodDesc;
+        // Make a food-like structure as the DB would return for each row
+        $foods = [];
+        foreach($rows as $row)
+        {
+            $foodDesc = [];
+
+            $cells = getTagContents($row, 'td');
+
+            $foodDesc['ndb_no'] = trim(strip_tags($cells[0]));
+            $foodDesc['name'] = trim(strip_tags($cells[1]));
+
+            $foods[] = $foodDesc;
+        }
+
+        return $foods;
     }
 
-    return $foods;
+    return false;
 }
 
 function extractFood($ndb_no)
