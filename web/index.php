@@ -72,7 +72,7 @@ foreach($meals as $m)
                             <li><a href="addTarget.php">Update Calorie Target</a></li>
                             <li><a href="#">History</a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?=$user['name']?><span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?=$user['name']?><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Account Settings</a></li>
                                     <li><a href="logOff.php">Log Off</a></li>
@@ -84,9 +84,9 @@ foreach($meals as $m)
             </nav>
         </header>
         <main>
-            <h2> Daily Report for <?= date("l, F jS") ?> </h2>
+            <h1> Daily Report for <?= date("l, F jS") ?> </h1>
             <div class="target-alert alert <?php if($calTotal <= $user['calorie_target']) echo "alert-info"; else echo "alert-warning"; ?>">
-                <strong><?= $calTotal ?> / <?= $user['calorie_target'] ?></strong> calories consumed today <a href="addTarget.php" class="alert-link">change your target</a>
+                <strong><?= $calTotal ?> / <?= $user['calorie_target'] ?></strong> calories consumed today. <a href="addTarget.php" class="alert-link">Change your target</a>
             </div>
             </p>
 
@@ -100,7 +100,7 @@ foreach($meals as $m)
 
                     <section class="well meal-report">
 
-                        <h3> <?= date("H:i:s", strtotime($m['date'])) ?> </h3>
+                        <h2> <?= date("H:i:s", strtotime($m['date'])) ?> </h2>
 
                         <table class="table">
                             <thead>
