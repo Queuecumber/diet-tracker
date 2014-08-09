@@ -45,7 +45,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                 <section>
                     <form action="addMeal.php" method="POST">
                         <label for="food_to_search">Food Name</label>
-                        <input type="text" name="food_to_search" value="<?= $food ?>"/>
+                        <input type="text" name="food_to_search" value="<?= $food ?>" required/>
                         <button type="submit">Search</button>
 
                         <?php

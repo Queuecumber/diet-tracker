@@ -88,10 +88,10 @@ else
     <body>
         <form action="register.php" method="POST">
             <label for="email">Email</label>
-            <input type="text" name="email"/>
+            <input type="text" name="email" requried/>
             <br/>
             <label for="name">Name</label>
-            <input type="text" name="name"/>
+            <input type="text" name="name" required/>
             <br/>
             <label for="target">Calorie Target</label>
             <input type="number" min="1000" max="3000" name="target" value="2000"/>

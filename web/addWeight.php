@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_weight']))
             <h1>Record a new Weight</h1>
             <form action="addWeight.php" method="POST">
                 <label for="new_weight">Weight</label>
-                <input name="new_weight" type="number"/>lbs
+                <input name="new_weight" type="number" required/>lbs
                 <button type="submit">Record</button>
             </form>
         </header>

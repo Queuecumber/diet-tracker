@@ -63,10 +63,10 @@ else
     <body>
         <form action="login.php" method="POST">
             <label for="user">Email</label>
-            <input type="text" name="user"/>
+            <input type="text" name="user" required/>
             <br/>
             <label for="pw">Password</label>
-            <input type="password" name="pw">
+            <input type="password" name="pw" required>
             <br/>
             <button type="submit">Log In</button>
             <br/>

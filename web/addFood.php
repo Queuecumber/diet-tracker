@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
         <h1>Add <?= $food['name'] ?> to Meal</h1>
         <form action="addMeal.php" method="POST">
             <label for="amount">Amount</label>
-            <input type="number" name="amount" step="any" min="0"/>
+            <input type="number" name="amount" step="any" min="0" required/>
             <select name="metric">
                 <?php
 
