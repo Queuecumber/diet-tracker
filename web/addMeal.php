@@ -4,6 +4,7 @@ include('utils/checkUser.php');
 include('utils/model.php');
 
 $user = getUser($seshUser);
+$frequentFoods = getFrequentFoods($user['email']);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['meal_id']))
 {
@@ -30,9 +31,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
     }
 
     addFoodToMeal($meal['meal_id'], $newFood, $amount, $metric);
+    updateFrequentFoods($user['email'], $newFood);
 
     $meal = getMeal($meal['meal_id']);
     $mealInfo = getMealInfo($meal['meal_id']);
+    $frequentFoods = getFrequentFoods($user['email']);
 }
 
 ?>
@@ -50,7 +53,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                 <section>
                     <form action="addMeal.php" method="POST">
                         <label for="food_to_search">Food Name</label>
-                        <input type="text" name="food_to_search" value="<?= $food ?>" required/>
+                        <input type="text" name="food_to_search" value="<?= $food ?>" list="frequent-foods" required/>
+
+                        <datalist id="frequent-foods">
+                            <?php
+
+                            foreach($frequentFoods as $ff)
+                            {
+                                ?>
+
+                                <option value="<?=$ff['name']?>"></option>
+
+                                <?php
+                            }
+
+                            ?>
+                        </datalist>
+
                         <button type="submit">Search</button>
 
                         <?php

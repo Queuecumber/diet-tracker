@@ -51,6 +51,42 @@ function addWeightForUser($email, $amount)
     insertSymbolic('weight_measurement', $weight);
 }
 
+function getFrequentFoods($email)
+{
+    $res = querySymbolic([
+        'frequently_eats',
+        ['food', 'food', 'ndb_no']
+    ],
+    ['user' => $email, 'count' => ['>', 1]], 'order by count desc');
+    return extractArray($res);
+}
+
+function updateFrequentFoods($email, $ndb_no)
+{
+    $res = querySymbolic('frequently_eats', ['user' => $email, 'food' => $ndb_no]);
+    $ff = extractSingle($res);
+
+    if(!$ff)
+    {
+        $ff = [
+            'user' => $email,
+            'food' => $ndb_no,
+            'count' => 1
+        ];
+
+        insertSymbolic('frequently_eats', $ff);
+    }
+    else
+    {
+        updateSymbolic('frequently_eats', [
+            'user' => $email,
+            'food' => $ndb_no
+        ],[
+            'count' => intval($ff['count']) + 1
+        ]);
+    }
+}
+
 function getMeal($meal_id)
 {
     $res = querySymbolic('meal', ['meal_id' => $meal_id]);

@@ -28,6 +28,19 @@ function composeComplex($val)
             $res = 'between ' . $op1 . ' and ' . $op2;
 
         break;
+
+    case '>':
+    case '>=':
+    case '<':
+    case '<=':
+    case '<>':
+        $op1 = $val[1];
+
+        if(is_string($op1))
+            $op1 = "'" . $op1 . "'";
+
+        $res = $op . $op1;
+        break;
     }
 
     return $res;
