@@ -14,15 +14,18 @@ function getTagContentsByClass($html, $tag, $class)
 
 function getTagAttributeByClass($html, $tag, $class, $attribute)
 {
-    $regexAfter = "/<" . $tag . ".*?class=\"" . $class . "\".*?" . $attribute . "=\"(.*?)\".*?>.*?<\/" . $tag . ">/si";
-    preg_match_all($regexAfter, $html, $matchA);
-    $matchAfter = $matchA[1];
+    $findTagWithClassRegex = "/<" . $tag . "[^>]+?class=\"" . $class . "\".*?>/si";
+    preg_match_all($findTagWithClassRegex, $html, $matchTags);
 
-    $regexBefore = "/<" . $tag . ".*?" . $attribute . "=\"(.*?)\".*?class=\"" . $class . "\".*?>.*?<\/" . $tag . ">/si";
-    preg_match_all($regexBefore, $html, $matchB);
-    $matchBefore = $matchB[1];
+    $extractAttributeNameRegex = "/" . $attribute . "=\"(.*?)\"/si";
+    $attrMatches = [];
+    foreach($matchTags[0] as $m)
+    {
+        preg_match_all($extractAttributeNameRegex, $m, $matchAttr);
+        $attrMatches = array_merge($attrMatches, $matchAttr[1]);
+    }
 
-    return array_unique(array_merge($matchAfter, $matchBefore));
+    return $attrMatches;
 }
 
 function getTagContents($html, $tag)
