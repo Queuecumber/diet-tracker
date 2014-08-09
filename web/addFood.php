@@ -13,12 +13,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['meal_id']))
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
 {
     $newFood = $_POST['food_to_add'];
-
-    if(!isset($meal))
-    {
-        $meal = createMeal($user['email']);
-    }
-
     $food = getFood($newFood);
     $metrics = getFoodMetrics($food['ndb_no']);
 }
@@ -49,7 +43,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                 ?>
             </select>
             <button type="submit">Add</button>
-            <input type="hidden" name="meal_id" value="<?= $meal['meal_id'] ?>"/>
+
+            <?php
+
+            if(isset($meal))
+            {
+                ?>
+
+                <input type="hidden" name="meal_id" value="<?= $meal['meal_id'] ?>"/>
+
+                <?php
+            }
+
+            ?>
+
             <input type="hidden" name="food_to_add" value="<?= $food['ndb_no'] ?>"/>
         </form>
     </body>

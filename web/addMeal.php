@@ -24,6 +24,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
     $amount = $_POST['amount'];
     $metric = $_POST['metric'];
 
+    if(!isset($meal))
+    {
+        $meal = createMeal($user['email']);
+    }
+
     addFoodToMeal($meal['meal_id'], $newFood, $amount, $metric);
 
     $meal = getMeal($meal['meal_id']);
