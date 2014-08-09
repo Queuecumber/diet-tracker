@@ -48,13 +48,14 @@ function extractFood($ndb_no)
     $pieces = explode(",", strip_tags($header), 2);
     $name = trim($pieces[1]);
 
-    // Extract the URL of its csv report TODO: FIX THIS
-    $url = getTagAttributeByClass($foodPage, 'a', 'excel', 'href');
+    $url = getTagAttributeByClass($foodPage, 'a', 'excel', 'href')[0];
+
+    $url = str_replace("&amp;", "&", $url);
 
     $food = [
         'ndb_no' => intval($ndb_no),
         'name' => $name,
-        'usda_report_url' => 'broken'
+        'usda_report_url' => 'http://ndb.nal.usda.gov' . $url
     ];
 
     return $food;
