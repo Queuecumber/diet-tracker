@@ -102,7 +102,7 @@ foreach($meals as $m)
 
                     <section class="well meal-report">
 
-                        <h2> <?= date("H:i:s", strtotime($m['date'])) ?> </h2>
+                        <h2> <?= date("g:i a", strtotime($m['date'])) ?> </h2>
 
                         <table class="table">
                             <thead>
