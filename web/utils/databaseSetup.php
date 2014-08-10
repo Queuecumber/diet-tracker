@@ -191,6 +191,39 @@ function updateSymbolic($table, $where, $values)
     return $mysqli->query($query);
 }
 
+function deleteSymbolic($table, $where)
+{
+    global $mysqli;
+    global $queryDebug;
+
+    $query = "delete from " . $table . " where ";
+
+    $sep = '';
+    foreach($where as $c => $v)
+    {
+        if(is_string($v))
+            $v = "'" . $v . "'";
+
+        $clause = '';
+        if(is_array($v))
+        {
+            $clause = $c . ' ' . composeComplex($v);
+        }
+        else
+        {
+            $clause = $c . '=' . $v;
+        }
+
+        $query = $query . $sep . $clause;
+        $sep = ' and ';
+    }
+
+    if($queryDebug)
+        echo $query;
+
+    return $mysqli->query($query);
+}
+
 function extractSingle($res, $remove = [])
 {
     if($res)
