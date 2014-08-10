@@ -18,6 +18,8 @@ foreach($meals as $m)
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>Daily Report</title>
 
         <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
@@ -66,16 +68,16 @@ foreach($meals as $m)
 
                     <div class="collapse navbar-collapse" id="dt-navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="index.php">Daily Report</a></li>
-                            <li><a href="addMeal.php">Add Meal</a></li>
-                            <li><a href="addWeight.php">Record Weight</a></li>
-                            <li><a href="addTarget.php">Update Calorie Target</a></li>
-                            <li><a href="#">History</a></li>
+                            <li class="active"><a href="index.php"><span class="glyphicon glyphicon-list"></span> Daily Report</a></li>
+                            <li><a href="addMeal.php"><span class="glyphicon glyphicon-cutlery"></span> Add Meal</a></li>
+                            <li><a href="addWeight.php"><span class="glyphicon glyphicon-inbox"></span> Record Weight</a></li>
+                            <li><a href="addTarget.php"><span class="glyphicon glyphicon-screenshot"></span> Update Calorie Target</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-time"></span> History</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?=$user['name']?><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Account Settings</a></li>
-                                    <li><a href="logOff.php">Log Off</a></li>
+                                    <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></li>
+                                    <li><a href="logOff.php"><span class="glyphicon glyphicon-off"></span> Log Off</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -141,6 +143,15 @@ foreach($meals as $m)
                         ?>
 
                     </section>
+
+                    <?php
+                }
+
+                if(count($meals) == 0)
+                {
+                    ?>
+
+                    No meals recorded for today! <a href="addMeal.php">Add one to get started.</a>
 
                     <?php
                 }
