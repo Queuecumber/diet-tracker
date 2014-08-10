@@ -142,7 +142,7 @@ foreach($meals as $m)
                                         <?= date("g:i a", strtotime($m['date'])) ?>
                                         <span class="meal-controls">
                                             <button class="edit-meal btn btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span></button>
-                                            <button class="delete-meal btn btn-sm btn-default"><span class="glyphicon glyphicon-trash"></span></button>
+                                            <button class="delete-meal btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
                                         </span>
                                     </h2>
 
