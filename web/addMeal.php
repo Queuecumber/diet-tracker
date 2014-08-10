@@ -6,10 +6,27 @@ include('utils/model.php');
 $user = getUser($seshUser);
 $frequentFoods = getFrequentFoods($user['email']);
 
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_food']))
+{
+    $meal_id = $_POST['meal_id'];
+    $food_id = $_POST['delete_food'];
+    $metric = $_POST['delete_metric'];
+    $value = $_POST['delete_value'];
+
+    dropFoodFromMeal($food_id, $meal_id, $metric, $value);
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['meal_id']))
 {
     $meal = getMeal($_POST['meal_id']);
     $mealInfo = getMealInfo($_POST['meal_id']);
+
+    if(count($mealInfo) == 0)
+    {
+        dropMeal($meal['meal_id'], $user['email']);
+        unset($meal);
+        unset($mealInfo);
+    }
 }
 
 $food = '';
@@ -316,6 +333,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                                         <td><?= $i['value'] ?></td>
                                         <td><?= $i['metric'] ?></td>
                                         <td><?= $i['calories'] ?></td>
+                                        <td>
+                                            <form class="form-delete-food-report" action="addMeal.php" method="POST">
+                                                <button type="submit" class="delete-food-report btn btn-xs btn-danger">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </button>
+                                                <input type="hidden" name="meal_id" value="<?=$meal['meal_id']?>"/>
+                                                <input type="hidden" name="delete_food" value="<?=$i['food']?>"/>
+                                                <input type="hidden" name="delete_metric" value="<?=$i['metric']?>"/>
+                                                <input type="hidden" name="delete_value" value="<?=$i['value']?>"/>
+                                            </form>
+                                        </td>
                                     </tr>
 
                                     <?php
