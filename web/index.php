@@ -28,11 +28,15 @@ foreach($meals as $m)
 
         <style>
 
+        main
+        {
+            padding: 10px;
+        }
+
         .meal-report
         {
             display: inline-block;
 
-            margin-left: 10px;
             margin-top: 10px;
         }
 
@@ -45,8 +49,6 @@ foreach($meals as $m)
         .target-alert
         {
             display: inline-block;
-
-            margin-left: 20px;
         }
 
         </style>
