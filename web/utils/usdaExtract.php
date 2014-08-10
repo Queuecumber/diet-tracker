@@ -7,7 +7,7 @@ function extractSearch($search)
     $encoded = urlencode($search);
 
     $queryString = $ndbUrl . "?qlookup=" . $encoded;
-    
+
     $queryResults = file_get_contents($queryString);
 
     // Check to see if we had an exact match, if so we can get the food info directly
@@ -17,7 +17,7 @@ function extractSearch($search)
         // Need to find the second <table> element
         $tableTags = getTagContents($queryResults, 'table');
 
-        if(count($tableTags) > 2) // No USDA matches found
+        if(count($tableTags) >= 2) // No USDA matches found if there arent enough tables
         {
             $resultsTable = $tableTags[1];
 
