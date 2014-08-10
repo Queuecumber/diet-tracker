@@ -42,6 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user']) && isset($_POST
         session_start();
         $_SESSION['user'] = $uname;
         $_SESSION['zone'] = $_POST['zone'];
+        $_SESSION['dst'] = $_POST['dst'];
         header("Location: index.php");
     }
     else
@@ -69,12 +70,26 @@ else
 
         <script>
 
+        Date.prototype.stdTimezoneOffset = function()
+        {
+            var jan = new Date(this.getFullYear(), 0, 1);
+            var jul = new Date(this.getFullYear(), 6, 1);
+
+            return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+        }
+
+        Date.prototype.dst = function()
+        {
+            return this.getTimezoneOffset() < this.stdTimezoneOffset();
+        }
+
         var visitortime = new Date();
         var visitortimezone = -visitortime.getTimezoneOffset() * 60;
 
         $(document).ready(function ()
         {
             $('.form-signin').append('<input type="hidden" name="zone" value="' + visitortimezone + '"/>');
+            $('.form-signin').append('<input type="hidden" name="dst" value="' + visitortime.dst() + '"/>');
         })
 
         </script>
