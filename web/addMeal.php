@@ -267,6 +267,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                                             <?php
                                         }
 
+                                        if(count($foods) == 0)
+                                        {
+                                            ?>
+
+                                            No foods with that name were found
+
+                                            <?php
+                                        }
+
                                         ?>
 
                                     </div>
@@ -281,7 +290,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
             <article class="current-meal col-md-8">
                 <h2> Current Meal </h2>
                 <?php
-                    if(isset($mealInfo))
+                    if(isset($mealInfo) && count($mealInfo) > 0)
                     {
                         ?>
 
