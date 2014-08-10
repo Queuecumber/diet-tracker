@@ -4,6 +4,13 @@ include('utils/checkUser.php');
 include('utils/model.php');
 
 $user = getUser($seshUser);
+
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_meal_id']))
+{
+    $deleteMealId = $_POST['delete_meal_id'];
+    dropMeal($deleteMealId, $user['email']);
+}
+
 $meals = getMealsForUser($user['email'], time());
 $weight = getWeightsForUser($user['email']);
 
@@ -38,7 +45,45 @@ foreach($meals as $m)
             display: inline-block;
         }
 
+        .meal-controls
+        {
+            position: absolute;
+            right: 30px;
+            top: 10px;
+        }
+
         </style>
+
+        <script>
+
+        $(document).ready(function ()
+        {
+            $('.meal-controls').find('.edit-meal').on('click', function ()
+            {
+                $(this).closest('section').find('.form-edit-meal').submit();
+            });
+
+            $('.meal-controls').find('.delete-meal').on('click', function ()
+            {
+                var deleteForm = $(this).closest('section').find('.form-delete-meal');
+                var time = $(this).closest('h2').text();
+
+                $('#delete-meal-modal').find('.modal-title').text('Delete Meal at ' + time);
+                $('#delete-meal-modal').find('#delete-meal-submit').on('click', function ()
+                {
+                    deleteForm.submit();
+                });
+
+                $('#delete-meal-modal').modal({show: true});
+            });
+
+            $('#delete-meal-modal').on('hide.bs.modal', function ()
+            {
+                $('#delete-meal-modal').find('#delete-meal-submit').off();
+            });
+        });
+
+        </script>
 
     </head>
     <body>
@@ -61,7 +106,7 @@ foreach($meals as $m)
                             <li><a href="addMeal.php"><span class="glyphicon glyphicon-cutlery"></span> Add Meal</a></li>
                             <li><a href="addWeight.php"><span class="glyphicon glyphicon-inbox"></span> Record Weight</a></li>
                             <li><a href="addTarget.php"><span class="glyphicon glyphicon-screenshot"></span> Update Calorie Target</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-time"></span> History</a></li>
+                            <li><a href="history.php"><span class="glyphicon glyphicon-time"></span> History</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?=$user['name']?><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -93,7 +138,13 @@ foreach($meals as $m)
                             <div class="col-xs-12 col-md-6 col-lg-4">
                                 <section class="well">
 
-                                    <h2> <?= date("g:i a", strtotime($m['date'])) ?> </h2>
+                                    <h2>
+                                        <?= date("g:i a", strtotime($m['date'])) ?>
+                                        <span class="meal-controls">
+                                            <button class="edit-meal btn btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+                                            <button class="delete-meal btn btn-sm btn-default"><span class="glyphicon glyphicon-trash"></span></button>
+                                        </span>
+                                    </h2>
 
                                     <table class="table table-condensed">
                                         <thead>
@@ -128,6 +179,14 @@ foreach($meals as $m)
                                     </table>
 
                                     <strong> Total Calories: </strong> <?= $m['amount'] ?>
+
+                                    <form action="addMeal.php" method="POST" class="form-edit-meal">
+                                        <input type="hidden" name="meal_id" value="<?= $m['meal_id'] ?>"/>
+                                    </form>
+
+                                    <form action="index.php" method="POST" class="form-delete-meal">
+                                        <input type="hidden" name="delete_meal_id" value="<?= $m['meal_id'] ?>"/>
+                                    </form>
 
                                 </section>
                             </div>
@@ -169,5 +228,24 @@ foreach($meals as $m)
                 </div>
             </div>
         </main>
+        <footer>
+            <div class="modal fade" id="delete-meal-modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only"Close</span></button>
+                            <h4 class="modal-title"></h4>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this meal? This action can <strong>not</strong> be undone!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button typoe="button" class="btn btn-danger" id="delete-meal-submit">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
