@@ -80,7 +80,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_weight']))
         </header>
         <main>
             <section>
-                <h1>Record A New Weight</h1>
+                <h1>Record a New Weight</h1>
                 <form action="addWeight.php" method="POST" class="form-inline">
                     <div class="input-group">
                         <input name="new_weight" type="number" class="form-control" placeholder="Weight (lbs)" min="0" step="any" required/>
