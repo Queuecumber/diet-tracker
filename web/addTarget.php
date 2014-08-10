@@ -53,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_target']))
                             <li><a href="addMeal.php"><span class="glyphicon glyphicon-cutlery"></span> Add Meal</a></li>
                             <li><a href="addWeight.php"><span class="glyphicon glyphicon-inbox"></span> Record Weight</a></li>
                             <li class="active"><a href="addTarget.php"><span class="glyphicon glyphicon-screenshot"></span> Update Calorie Target</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-time"></span> History</a></li>
+                            <li><a href="history.php"><span class="glyphicon glyphicon-time"></span> History</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?=$user['name']?><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
