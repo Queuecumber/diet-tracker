@@ -137,6 +137,14 @@ function createMeal($email)
     return extractSingle($res);
 }
 
+function dropMeal($meal_id, $email)
+{
+    deleteSymbolic('meal', [
+        'meal_id' => $meal_id,
+        'user' => $email
+    ]);
+}
+
 function getFood($ndb_no)
 {
     $res = querySymbolic('food', [
