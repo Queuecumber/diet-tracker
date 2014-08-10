@@ -64,8 +64,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
 
         .find-foods
         {
-            margin-left: 10px;
-
             height: 700px;
 
             position: relative;
