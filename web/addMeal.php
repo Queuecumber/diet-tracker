@@ -65,20 +65,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
         .find-foods
         {
             max-height: 700px;
-
-            position: relative;
         }
 
         .find-foods .panel-body
         {
-            height: 100%;
+            max-height: 600px;
+            padding: 0px;
+        }
+
+        .search-area
+        {
+            padding: 10px;
         }
 
         .food-search-results-body
         {
-            margin-top: 10px;
+
             overflow-y: auto;
-            height: 86%;
+            max-height: 530px;
+
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
         .food-search-results a.list-group-item
@@ -179,7 +186,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                         Find Foods
                     </section>
                     <div class="panel-body">
-                        <section>
+                        <section class="search-area">
                             <form action="addMeal.php" method="POST" class="form-inline">
 
                                 <div class="input-group">
