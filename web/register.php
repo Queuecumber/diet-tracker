@@ -1,6 +1,8 @@
 <?php
 include('utils/databaseSetup.php');
 
+// This page won't work without a suitable PHP email setup
+
 function genPassword($len)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
