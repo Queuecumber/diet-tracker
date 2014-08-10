@@ -45,6 +45,11 @@ foreach($meals as $m)
             display: inline-block;
         }
 
+        .weight-alert
+        {
+            display: inline-block;
+        }
+
         .meal-controls
         {
             position: absolute;
@@ -124,6 +129,22 @@ foreach($meals as $m)
             <div class="target-alert alert <?php if($calTotal <= $user['calorie_target']) echo "alert-info"; else echo "alert-warning"; ?>">
                 <strong><?= $calTotal ?> / <?= $user['calorie_target'] ?></strong> calories consumed today. <a href="addTarget.php" class="alert-link">Change your target</a>
             </div>
+
+            <?php
+
+            if(count($weight) == 0)
+            {
+                ?>
+
+                <br/>
+                <div class="weight-alert alert alert-info">
+                    You have not recorded your weight. <a href="addWeight.php" class="alert-link">Record your initial weight here</a>
+                </div>
+
+                <?php
+            }
+
+            ?>
 
             <div class="container-fluid">
                 <div class="row">
