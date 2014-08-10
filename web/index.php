@@ -25,7 +25,7 @@ foreach($meals as $m)
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=0.9">
 
         <title>Daily Report</title>
 
@@ -157,7 +157,7 @@ foreach($meals as $m)
 
                             ?>
                             <div class="col-xs-12 col-md-6 col-lg-4">
-                                <section class="well">
+                                <section class="well meal-report">
 
                                     <h2>
                                         <?= date("g:i a", strtotime($m['date'])) ?>

@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=0.9">
 
         <title>Amount of Food</title>
 
