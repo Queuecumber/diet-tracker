@@ -112,7 +112,7 @@ foreach($meals as $m)
                                             {
                                                 ?>
 
-                                                <tr class="<?= floatval($i['calories']) > 400 ? "danger" : "" ?>">
+                                                <tr class="<?= $i['calories'] > 400 ? "danger" : "" ?>">
                                                     <td><?= $i['name'] ?></td>
                                                     <td><?= $i['value'] ?></td>
                                                     <td><?= $i['metric'] ?></td>
