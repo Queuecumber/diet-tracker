@@ -200,4 +200,35 @@ function addFoodToMeal($meal_id, $ndb_no, $amount, $metric)
     updateSymbolic('meal', ['meal_id' => $meal_id], ['amount' => $meal['amount']]);
 }
 
+function dropFoodFromMeal($food_id, $meal_id, $metric, $value)
+{
+    $res = querySymbolic('food_report', [
+        'meal' => $meal_id,
+        'food' => $food_id,
+        'metric' => $metric,
+        'value' => $value
+    ], 'limit 1');
+
+    $fr = extractSingle($res);
+
+    deleteSymbolic('food_report', [
+        'meal' => $meal_id,
+        'food' => $food_id,
+        'metric' => $metric,
+        'value' => $value
+    ], 'limit 1');
+
+    $res = querySymbolic('meal', [
+        'meal_id' => $meal_id
+    ]);
+
+    $meal = extractSingle($res);
+
+    updateSymbolic('meal', [
+        'meal_id' => $meal_id
+    ], [
+        'amount' => $meal['amount'] - $fr['calories']
+    ]);
+}
+
 ?>
