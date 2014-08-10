@@ -101,7 +101,36 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
         {
             $('.food-search-results').on('click', 'a.list-group-item', function ()
             {
-                $(this).find('form').submit();
+                var targetForm = $(this).find('form');
+                var foodToAdd = targetForm.find('input[name=food_to_add]').val();
+                var mealId = targetForm.find('input[name=meal_id]').val();
+                var foodName = $(this).text();
+
+                var postData = {
+                    food_to_add: foodToAdd
+                };
+
+                if(mealId)
+                    postData['meal_id'] = mealId;
+
+                $.post('addFood.php', postData, function(res)
+                {
+                    var html = $(res);
+                    var f = html.filter('form');
+                    f.find('button').hide();
+
+                    $('#add-food-modal .modal-body').html(f);
+                    $('#add-food-modal .modal-title').text(foodName);
+                    $('#add-food-modal').modal({show: true});
+
+                }, 'html');
+
+            });
+
+            $('#add-food-submit').on('click', function ()
+            {
+                // Can't use submit() here or required fields will be ignored
+                $('#add-food-modal').find('form').find('[type=submit]').trigger('click');
             });
         });
 
@@ -210,7 +239,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                                                 <?=$f['name']?>
 
 
-                                                <form action="addFood.php" method="POST">
+                                                <form>
                                                     <input type="hidden" name="food_to_add" value="<?= $f['ndb_no'] ?>"/>
 
                                                     <?php
@@ -288,5 +317,24 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                 ?>
             </article>
         </main>
+        <footer>
+            <div class="modal fade" id="add-food-modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only"Close</span></button>
+                            <h4 class="modal-title"></h4>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button typoe="button" class="btn btn-primary" id="add-food-submit">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
