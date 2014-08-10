@@ -111,6 +111,7 @@ function findFoods($search)
 
 function findFoodByName($name)
 {
+    $name = str_replace("'", "&#39;", $name);
     $res = querySymbolic('food', ['name' => $name]);
     return extractSingle($res);
 }
