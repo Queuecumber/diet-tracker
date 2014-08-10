@@ -108,7 +108,7 @@ else
 
         .container
         {
-            margin-top: 200px;
+            margin-top: 100px;
             max-width: 400px;
             text-align: center;
         }
