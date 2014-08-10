@@ -9,6 +9,11 @@ function getUser($email)
     return extractSingle($res, ['password']);
 }
 
+function updateUserPassword($email, $hashpass)
+{
+    updateSymbolic('user',['email' => $email],['password' => $hashpass]);
+}
+
 function changeTargetForUser($email, $target)
 {
     updateSymbolic('user', ['email' => $email], ['calorie_target' => $target]);
