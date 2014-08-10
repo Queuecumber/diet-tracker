@@ -64,7 +64,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
 
         .find-foods
         {
-            height: 700px;
+            max-height: 700px;
 
             position: relative;
         }
@@ -311,6 +311,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
                         </table>
 
                         <strong> Total Calories: </strong> <?= $meal['amount'] ?>
+
+                        <?php
+                    }
+                    else
+                    {
+                        ?>
+
+                        There are no foods in this meal, search for foods to get started!
 
                         <?php
                     }
