@@ -5,6 +5,14 @@ include('utils/model.php');
 
 $user = getUser($seshUser);
 
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
+{
+    $newPass = $_POST['new_password'];
+    $hashPass = md5($newPass);
+
+    updateUserPassword($user['email'], $hashPass);
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +32,34 @@ $user = getUser($seshUser);
             padding: 10px;
         }
 
+        .pwnomatch
+        {
+            display: none;
+        }
+
         </style>
+
+        <script>
+
+        $(document).ready(function()
+        {
+            $('.form-changepw').submit(function ()
+            {
+                var pwInputs = $(this).find('input[type=password]');
+
+                if($(pwInputs[0]).val() !== $(pwInputs[1]).val())
+                {
+                    $('.pwnomatch').show();
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            });
+        });
+
+        </script>
 
     </head>
     <body>
@@ -61,7 +96,28 @@ $user = getUser($seshUser);
             </nav>
         </header>
         <main>
-            <h1><?=$user['name']?></h1>
+            <h1>Account Settings <small><?=$user['name']?></small></h1>
+            <br/>
+            <p>
+                <strong>Email Address</strong> <?=$user['email']?>
+            </p>
+            <br/>
+            <div class="row">
+                <div class="col-xs-12 col-md-4">
+                    <section class="panel-changepw panel panel-default">
+                        <div class="panel-heading">Change Password</div>
+                        <div class="panel-body">
+                            <form action="userSettings.php" method="POST" class="form-changepw">
+                                <input type="password" class="form-control" name="new_password" placeholder="Password"/> <br/>
+                                <input type="password" class="form-control" placeholder="Verify Password"/> <br/>
+                                <button type="submit" class="btn btn-default">Change</button>
+                            </form>
+                            <br/>
+                            <div class="pwnomatch alert alert-danger"><strong>Oops!</strong> Passwords do not match</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </main>
     </body>
 </html>
