@@ -33,19 +33,6 @@ foreach($meals as $m)
             padding: 10px;
         }
 
-        .meal-report
-        {
-            display: inline-block;
-
-            margin-top: 10px;
-        }
-
-        .meal-report table td
-        {
-            max-width: 300px;
-            text-overflow: ellipsis;
-        }
-
         .target-alert
         {
             display: inline-block;
@@ -92,75 +79,95 @@ foreach($meals as $m)
             <div class="target-alert alert <?php if($calTotal <= $user['calorie_target']) echo "alert-info"; else echo "alert-warning"; ?>">
                 <strong><?= $calTotal ?> / <?= $user['calorie_target'] ?></strong> calories consumed today. <a href="addTarget.php" class="alert-link">Change your target</a>
             </div>
-            </p>
 
-            <?php
+            <div class="container-fluid">
+                <div class="row">
+                    <?php
 
-                foreach($meals as $m)
-                {
-                    $info = getMealInfo($m['meal_id']);
+                        $colCnt = 1;
+                        foreach($meals as $m)
+                        {
+                            $info = getMealInfo($m['meal_id']);
 
-                    ?>
+                            ?>
+                            <div class="col-xs-12 col-md-6 col-lg-4">
+                                <section class="well">
 
-                    <section class="well meal-report">
+                                    <h2> <?= date("g:i a", strtotime($m['date'])) ?> </h2>
 
-                        <h2> <?= date("g:i a", strtotime($m['date'])) ?> </h2>
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Servings</th>
+                                                <th>Serving Size</th>
+                                                <th>Calories</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Servings</th>
-                                    <th>Serving Size</th>
-                                    <th>Calories</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                            <?php
 
-                                <?php
+                                            foreach($info as $i)
+                                            {
+                                                ?>
 
-                                foreach($info as $i)
-                                {
-                                    ?>
+                                                <tr>
+                                                    <td><?= $i['name'] ?></td>
+                                                    <td><?= $i['value'] ?></td>
+                                                    <td><?= $i['metric'] ?></td>
+                                                    <td><?= $i['calories'] ?></td>
+                                                </tr>
 
-                                    <tr>
-                                        <td><?= $i['name'] ?></td>
-                                        <td><?= $i['value'] ?></td>
-                                        <td><?= $i['metric'] ?></td>
-                                        <td><?= $i['calories'] ?></td>
-                                    </tr>
+                                                <?php
+                                            }
 
-                                    <?php
-                                }
+                                            ?>
 
+                                        </tbody>
+                                    </table>
+
+                                    <strong> Total Calories: </strong> <?= $m['amount'] ?>
+
+                                </section>
+                            </div>
+
+                            <?php
+
+                            // Control row divisions on all screen sizes
+                            if($colCnt % 3 == 0)
+                            {
                                 ?>
 
-                            </tbody>
-                        </table>
+                                <div class="clearfix visible-lg-block"></div>
 
-                        <strong> Total Calories: </strong> <?= $m['amount'] ?>
+                                <?php
+                            }
 
-                        <?php
+                            if($colCnt % 2 == 0)
+                            {
+                                ?>
 
-                        ?>
+                                <div class="clearfix visible-md-block"></div>
 
-                    </section>
+                                <?php
+                            }
 
-                    <?php
-                }
+                            $colCnt++;
+                        }
 
-                if(count($meals) == 0)
-                {
+                        if(count($meals) == 0)
+                        {
+                            ?>
+
+                            No meals recorded for today! <a href="addMeal.php">Add one to get started.</a>
+
+                            <?php
+                        }
+
                     ?>
-
-                    No meals recorded for today! <a href="addMeal.php">Add one to get started.</a>
-
-                    <?php
-                }
-
-            ?>
+                </div>
+            </div>
         </main>
-        <footer>
-        </footer>
     </body>
 </html>
