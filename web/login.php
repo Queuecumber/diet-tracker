@@ -41,6 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user']) && isset($_POST
     {
         session_start();
         $_SESSION['user'] = $uname;
+        $_SESSION['zone'] = $_POST['zone'];
         header("Location: index.php");
     }
     else
@@ -65,6 +66,18 @@ else
         <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
         <script src="lib/jquery-2.1.1.min.js"></script>
         <script src="lib/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+
+        <script>
+
+        var visitortime = new Date();
+        var visitortimezone = -visitortime.getTimezoneOffset() * 60;
+
+        $(document).ready(function ()
+        {
+            $('.form-signin').append('<input type="hidden" name="zone" value="' + visitortimezone + '"/>');
+        })
+
+        </script>
 
         <style>
 

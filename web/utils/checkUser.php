@@ -2,6 +2,23 @@
 
 session_start();
 
+function tz_offset_to_name($offset)
+{
+    $abbrarray = timezone_abbreviations_list();
+    foreach ($abbrarray as $abbr)
+    {
+        foreach ($abbr as $city)
+        {
+            if ($city['offset'] == $offset)
+            {
+                return $city['timezone_id'];
+            }
+        }
+    }
+
+    return FALSE;
+}
+
 if(!(isset($_SESSION['user'])))
 {
     header("Location: login.php");
@@ -9,6 +26,10 @@ if(!(isset($_SESSION['user'])))
 else
 {
     $seshUser = $_SESSION['user'];
+    $timezone = $_SESSION['zone'];
+
+    $tzName = tz_offset_to_name($timezone);
+    date_default_timezone_set($tzName);
 }
 
 ?>
