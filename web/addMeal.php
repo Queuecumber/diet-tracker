@@ -90,6 +90,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
             overflow: hidden;
         }
 
+        main
+        {
+            padding: 10px;
+        }
+
         </style>
 
         <script>
@@ -139,7 +144,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
             </nav>
         </header>
         <main>
-            <h1> Add New Meal </h1>
+            <h1> Add a New Meal </h1>
 
             <article class="col-md-4">
                 <aside class="panel panel-default find-foods">
