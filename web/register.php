@@ -49,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $name = $_POST['name'];
 
-            if(isset($POST['target']))
+            if(isset($_POST['target']))
                 $target = $_POST['target'];
             else
                 $target = '2000';
