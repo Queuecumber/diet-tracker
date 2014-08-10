@@ -7,6 +7,15 @@ $dbName = 'diet_tracker';
 
 $mysqli = new mysqli($dbHost, $dbUser, $dbPass, $dbName);
 
+$queryDebug = false;
+
+function setQueryDebug($dbg)
+{
+    global $queryDebug;
+
+    $queryDebug = $dbg;
+}
+
 function composeComplex($val)
 {
     $op = $val[0];
@@ -71,6 +80,7 @@ function composeJoins($desc)
 function querySymbolic($tableName, $params, $suffix = '')
 {
     global $mysqli;
+    global $queryDebug;
 
     if(is_array($tableName))
         $tableName = composeJoins($tableName);
@@ -98,12 +108,16 @@ function querySymbolic($tableName, $params, $suffix = '')
 
     $query = $query . ' ' . $suffix;
 
+    if($queryDebug)
+        echo $query;
+
     return $mysqli->query($query);
 }
 
 function insertSymbolic($table, $values)
 {
     global $mysqli;
+    global $queryDebug;
 
     $query = "insert into " . $table . " ";
     $cols = '(';
@@ -126,12 +140,16 @@ function insertSymbolic($table, $values)
 
     $query = $query . $cols . " values " . $vals;
 
+    if($queryDebug)
+        echo $query;
+
     return $mysqli->query($query);
 }
 
 function updateSymbolic($table, $where, $values)
 {
     global $mysqli;
+    global $queryDebug;
 
     $query = "update " . $table . " set ";
 
@@ -166,6 +184,9 @@ function updateSymbolic($table, $where, $values)
         $query = $query . $sep . $clause;
         $sep = ' and ';
     }
+
+    if($queryDebug)
+        echo $query;
 
     return $mysqli->query($query);
 }
