@@ -191,7 +191,7 @@ function updateSymbolic($table, $where, $values)
     return $mysqli->query($query);
 }
 
-function deleteSymbolic($table, $where)
+function deleteSymbolic($table, $where, $suffix = '')
 {
     global $mysqli;
     global $queryDebug;
@@ -217,6 +217,8 @@ function deleteSymbolic($table, $where)
         $query = $query . $sep . $clause;
         $sep = ' and ';
     }
+
+    $query = $query . $suffix;
 
     if($queryDebug)
         echo $query;
