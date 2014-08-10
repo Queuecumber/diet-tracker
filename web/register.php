@@ -83,21 +83,61 @@ else
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Diet Tracker Register</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Diet Tracker Registration</title>
+
+        <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+        <script src="lib/jquery-2.1.1.min.js"></script>
+        <script src="lib/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+
+        <style>
+
+        main
+        {
+            padding: 10px;
+        }
+
+        .container
+        {
+            margin-top: 100px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .container .alert
+        {
+            margin-top: 25px;
+        }
+
+        </style>
+
     </head>
     <body>
-        <form action="register.php" method="POST">
-            <label for="email">Email</label>
-            <input type="text" name="email" requried/>
-            <br/>
-            <label for="name">Name</label>
-            <input type="text" name="name" required/>
-            <br/>
-            <label for="target">Calorie Target</label>
-            <input type="number" min="1000" max="3000" name="target" value="2000"/>
-            <button type="submit">Register</button>
-            <br/>
-            <output name="response"><?= $errorMessage ?></output>
-        </form>
+        <main>
+            <section class="container">
+                <h1>Diet Tracker Registration</h1>
+
+                Your password will be emailed to the address you provide <br/> <br/>
+
+                <form action="register.php" method="POST">
+                    <input type="email" name="email" class="form-control" placeholder="Email" requried/> <br/>
+                    <input type="text" name="name" class="form-control" placeholder="Name" required/> <br/>
+                    <input type="number" min="1000" max="3000" name="target" class="form-control" placeholder="Calorie Target (optional)" value="2000"/> <br/>
+                    <button type="submit" class="btn btn-default btn-lg btn-block">Register</button>
+                </form>
+                <?php
+
+                if($errorMessage != '')
+                {
+                    ?>
+
+                    <div class="alert alert-danger"><strong>Oops!</strong> <?= $errorMessage ?></div>
+
+                    <?php
+                }
+                ?>
+            </section>
+        </main>
     </body>
 </html>
