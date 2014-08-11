@@ -30,7 +30,7 @@ else
     $dst = filter_var($_SESSION['dst'], FILTER_VALIDATE_BOOLEAN);
 
     if(dst)
-        $timezone -= 3600;
+        $timezone += 3600;
 
     $tzName = tz_offset_to_name($timezone);
     date_default_timezone_set($tzName);
