@@ -49,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $name = $_POST['name'];
 
-            if(isset($_POST['target']))
+            if(isset($_POST['target']) && $_POST['target'] != "")
                 $target = $_POST['target'];
             else
                 $target = '2000';
@@ -125,7 +125,7 @@ else
                 <form action="register.php" method="POST">
                     <input type="email" name="email" class="form-control" placeholder="Email" requried/> <br/>
                     <input type="text" name="name" class="form-control" placeholder="Name" required/> <br/>
-                    <input type="number" min="1000" max="3000" name="target" class="form-control" placeholder="Calorie Target (optional)" value="2000"/> <br/>
+                    <input type="number" min="1000" max="3000" name="target" class="form-control" placeholder="Calorie Target (optional)"/> <br/>
                     <button type="submit" class="btn btn-default btn-lg btn-block">Register</button>
                 </form>
                 <?php
