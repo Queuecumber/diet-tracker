@@ -29,10 +29,7 @@ else
     $timezone = $_SESSION['zone'];
     $dst = filter_var($_SESSION['dst'], FILTER_VALIDATE_BOOLEAN);
 
-    //if(dst)
-    //    $timezone += 3600;
-
-    $tzName = tz_offset_to_name($timezone);
+    $tzName = timezone_name_from_abbr("", $timezone, $dst ? 1 : 0);
     date_default_timezone_set($tzName);
 }
 

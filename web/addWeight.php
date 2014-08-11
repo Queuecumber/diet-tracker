@@ -108,7 +108,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_weight']))
                                 ?>
 
                                 <div class="weight-record">
-                                    <strong><?= $w['amount'] ?>lbs</strong> on <?= date("l, F jS Y" ,strtotime($w['date'])) ?>
+                                    <strong><?= $w['amount'] ?>lbs</strong> on <?= date("l, F jS Y" ,strtotime($w['date'] . " UTC")) ?>
                                 </div>
 
                                 <?php

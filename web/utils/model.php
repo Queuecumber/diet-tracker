@@ -25,12 +25,24 @@ function getMealsForUser($email, $date)
     $dayStart = $dayString . " 00:00:00";
     $dayEnd = $dayString . " 23:59:59";
 
+    $gmStart = gmdate('Y-m-d h:i:s', strtotime($dayStart));
+    $gmEnd = gmdate('Y-m-d h:i:s', strtotime($dayEnd));
+
     $res = querySymbolic('meal', [
         'user' => $email,
-        'date' => ['between', $dayStart, $dayEnd]
+        'date' => ['between', $gmStart, $gmEnd]
     ]);
 
-    return extractArray($res);
+    $meals = extractArray($res);
+
+    for($i = 0; $i < count($meals); $i++)
+    {
+        $ts = $meals[$i]['date'];
+
+        $meals[$i]['date'] = date('Y-m-d h:i:s', strtotime($ts . ' UTC'));
+    }
+
+    return $meals;
 }
 
 function getWeightsForUser($email)
@@ -39,13 +51,22 @@ function getWeightsForUser($email)
         'user' => $email
     ], 'order by date desc');
 
-    return extractArray($res);
+    $weights = extractArray($res);
+
+    for($i = 0; $i < count($weights); $i++)
+    {
+        $ts = $weights[$i]['date'];
+
+        $weights[$i]['date'] = date('Y-m-d h:i:s', strtotime($ts . ' UTC'));
+    }
+
+    return $weights;
 }
 
 function addWeightForUser($email, $amount)
 {
     $amount = floatval($amount);
-    $dayString = date('Y-m-d H:i:s');
+    $dayString = gmdate('Y-m-d H:i:s');
 
     $weight = [
         'date' => $dayString,
@@ -95,7 +116,11 @@ function updateFrequentFoods($email, $ndb_no)
 function getMeal($meal_id)
 {
     $res = querySymbolic('meal', ['meal_id' => $meal_id]);
-    return extractSingle($res);
+    $m = extractSingle($res);
+
+    $m['date'] = date('Y-m-d h:i:s', strtotime($m['date'] . ' UTC'));
+
+    return $m;
 }
 
 function getMealInfo($meal_id)
@@ -125,7 +150,7 @@ function createMeal($email)
 {
     global $mysqli;
 
-    $dayString = date('Y-m-d H:i:s');
+    $dayString = gmdate('Y-m-d H:i:s');
 
     insertSymbolic('meal', [
         'date' => $dayString,
@@ -139,7 +164,12 @@ function createMeal($email)
         'meal_id' => $iid
     ]);
 
-    return extractSingle($res);
+
+    $m = extractSingle($res);
+
+    $m['date'] = date('Y-m-d h:i:s', strtotime($m['date'] . ' UTC'));
+
+    return $m;
 }
 
 function dropMeal($meal_id, $email)
