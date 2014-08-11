@@ -207,14 +207,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['food_to_add']))
         <main>
             <h1> Add a New Meal </h1>
 
-            <article class="col-md-4">
+            <article class="col-lg-3 col-sm-4">
                 <aside class="panel panel-default find-foods">
                     <section class="panel-heading">
                         Find Foods
                     </section>
                     <div class="panel-body">
                         <section class="search-area">
-                            <form action="addMeal.php" method="POST" class="form-inline">
+                            <form action="addMeal.php" method="POST">
 
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Name" name="food_to_search" value="<?= $food ?>" list="frequent-foods" required/>

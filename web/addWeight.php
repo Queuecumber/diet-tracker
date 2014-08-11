@@ -33,7 +33,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_weight']))
 
         .previous-weights
         {
-            width: 300px;
             margin-top: 10px;
         }
 
@@ -89,49 +88,53 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_weight']))
             </nav>
         </header>
         <main>
-            <section>
-                <h1>Record a New Weight</h1>
-                <form action="addWeight.php" method="POST" class="form-inline">
-                    <div class="input-group">
-                        <input name="new_weight" type="number" class="form-control" placeholder="Weight (lbs)" min="0" step="any" required/>
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">Record</button>
-                        </span>
-                    </div>
-                </form>
-            </section>
-            <section class="previous-weights">
-                <?php
+            <h1>Record a New Weight</h1>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <section>
+                        <form action="addWeight.php" method="POST">
+                            <div class="input-group">
+                                <input name="new_weight" type="number" class="form-control" placeholder="Weight (lbs)" min="0" step="any" required/>
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default">Record</button>
+                                </span>
+                            </div>
+                        </form>
+                    </section>
+                    <section class="previous-weights">
+                        <?php
 
-                if(count($weights) > 0)
-                {
-                    ?>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Previous Weights</h3>
-                        </div>
-                        <div class="panel-body">
-                            <?php
-
-                            foreach($weights as $w)
-                            {
-                                ?>
-
-                                <div class="weight-record">
-                                    <strong><?= $w['amount'] ?>lbs</strong> on <?= date("l, F jS Y" ,strtotime($w['date'] . " UTC")) ?>
-                                </div>
-
-                                <?php
-                            }
-
+                        if(count($weights) > 0)
+                        {
                             ?>
-                        </div>
-                    </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Previous Weights</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <?php
 
-                    <?php
-                }
-                ?>
-            </section>
+                                    foreach($weights as $w)
+                                    {
+                                        ?>
+
+                                        <div class="weight-record">
+                                            <strong><?= $w['amount'] ?>lbs</strong> on <?= date("l, F jS Y" ,strtotime($w['date'] . " UTC")) ?>
+                                        </div>
+
+                                        <?php
+                                    }
+
+                                    ?>
+                                </div>
+                            </div>
+
+                            <?php
+                        }
+                        ?>
+                    </section>
+                </div>
+            </div>
         </main>
     </body>
 </html>

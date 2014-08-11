@@ -80,7 +80,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_target']))
             <section>
                 <h1>Update Your Daily Calorie Target</h1>
                 <div class="row">
-                    <div class="col-xs-12 col-md-4">
+                    <div class="col-xs-12 col-sm-6 col-md-4">
                         <form action="addTarget.php" method="POST">
                             <div class="input-group">
                                 <input name="new_target" type="number" min="0" step="any" placeholder="Target (calories)" class="form-control" required/>
