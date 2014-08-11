@@ -11,6 +11,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
     $hashPass = md5($newPass);
 
     updateUserPassword($user['email'], $hashPass);
+
+    $changePwSuccess = true;
 }
 
 ?>
@@ -55,8 +57,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
             {
                 var pwInputs = $(this).find('input[type=password]');
 
-                if($(pwInputs[0]).val() !== $(pwInputs[1]).val())
+                if($(pwInputs[0]).val() == "")
                 {
+                    $('.pwnomatch-message').text('Please enter a new password');
+                    $('.pwnomatch').show();
+                    return false;
+                }
+                else if($(pwInputs[0]).val().length < 8)
+                {
+                    $('.pwnomatch-message').text('Password must be a minimum of 8 characters');
+                    $('.pwnomatch').show();
+                    return false;
+                }
+                else if($(pwInputs[0]).val() !== $(pwInputs[1]).val())
+                {
+                    $('.pwnomatch-message').text('Passwords do not match');
                     $('.pwnomatch').show();
                     return false;
                 }
@@ -64,6 +79,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
                 {
                     return true;
                 }
+
+                return false;
             });
         });
 
@@ -118,12 +135,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
                         <div class="panel-heading">Change Password</div>
                         <div class="panel-body">
                             <form action="userSettings.php" method="POST" class="form-changepw">
-                                <input type="password" class="form-control" name="new_password" placeholder="Password"/> <br/>
+                                <input type="password" class="form-control" name="new_password" placeholder="New Password"/> <br/>
                                 <input type="password" class="form-control" placeholder="Verify Password"/> <br/>
                                 <button type="submit" class="btn btn-default">Change</button>
                             </form>
                             <br/>
-                            <div class="pwnomatch alert alert-danger"><strong>Oops!</strong> Passwords do not match</div>
+                            <div class="pwnomatch alert alert-danger"><strong>Oops!</strong> <span class="pwnomatch-message"></span></div>
+                            <?php
+
+                            if(isset($changePwSuccess) && $changePwSuccess)
+                            {
+                                ?>
+
+                                <div class="alert alert-success alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <strong>Success!</strong> Password sucessfully changed
+                                </div>
+
+                                <?php
+                            }
+
+                            ?>
                         </div>
                     </section>
                 </div>
