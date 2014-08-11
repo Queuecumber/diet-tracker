@@ -79,16 +79,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_target']))
         <main>
             <section>
                 <h1>Update Your Daily Calorie Target</h1>
-                <form action="addTarget.php" method="POST" class="form-inline">
-                    <div class="input-group">
-                        <input name="new_target" type="number" min="0" step="any" placeholder="Target (calories)" class="form-control" required/>
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">Change</button>
-                        </span>
-                </form>
-            </section>
-            <section>
-                <strong>Current Target</strong> <?=$user['calorie_target']?> calories
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <form action="addTarget.php" method="POST">
+                            <div class="input-group">
+                                <input name="new_target" type="number" min="0" step="any" placeholder="Target (calories)" class="form-control" required/>
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default">Change</button>
+                                </span>
+                            </div>
+                        </form>
+                        <strong>Current Target</strong> <?=$user['calorie_target']?> calories
+                    </div>
+                </div>
             </section>
         </main>
     </body>
