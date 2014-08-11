@@ -25,8 +25,8 @@ function getMealsForUser($email, $date)
     $dayStart = $dayString . " 00:00:00";
     $dayEnd = $dayString . " 23:59:59";
 
-    $gmStart = gmdate('Y-m-d h:i:s', strtotime($dayStart));
-    $gmEnd = gmdate('Y-m-d h:i:s', strtotime($dayEnd));
+    $gmStart = gmdate('Y-m-d H:i:s', strtotime($dayStart));
+    $gmEnd = gmdate('Y-m-d H:i:s', strtotime($dayEnd));
 
     $res = querySymbolic('meal', [
         'user' => $email,
@@ -39,7 +39,7 @@ function getMealsForUser($email, $date)
     {
         $ts = $meals[$i]['date'];
 
-        $meals[$i]['date'] = date('Y-m-d h:i:s', strtotime($ts . ' UTC'));
+        $meals[$i]['date'] = date('Y-m-d H:i:s', strtotime($ts . ' UTC'));
     }
 
     return $meals;
@@ -57,7 +57,7 @@ function getWeightsForUser($email)
     {
         $ts = $weights[$i]['date'];
 
-        $weights[$i]['date'] = date('Y-m-d h:i:s', strtotime($ts . ' UTC'));
+        $weights[$i]['date'] = date('Y-m-d H:i:s', strtotime($ts . ' UTC'));
     }
 
     return $weights;
@@ -118,7 +118,7 @@ function getMeal($meal_id)
     $res = querySymbolic('meal', ['meal_id' => $meal_id]);
     $m = extractSingle($res);
 
-    $m['date'] = date('Y-m-d h:i:s', strtotime($m['date'] . ' UTC'));
+    $m['date'] = date('Y-m-d H:i:s', strtotime($m['date'] . ' UTC'));
 
     return $m;
 }
@@ -167,7 +167,7 @@ function createMeal($email)
 
     $m = extractSingle($res);
 
-    $m['date'] = date('Y-m-d h:i:s', strtotime($m['date'] . ' UTC'));
+    $m['date'] = date('Y-m-d H:i:s', strtotime($m['date'] . ' UTC'));
 
     return $m;
 }
