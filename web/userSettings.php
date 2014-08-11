@@ -123,7 +123,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
             </nav>
         </header>
         <main>
-            <h1>Account Settings <small><?=$user['name']?></small></h1>
+            <h1>Account Settings <span class="visible-xs-inline"><br/></span><small><?=$user['name']?></small></h1>
             <br/>
             <p>
                 <strong>Email Address</strong> <?=$user['email']?>
