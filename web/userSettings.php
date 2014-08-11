@@ -37,6 +37,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
             display: none;
         }
 
+        .glyphicon-beta:before
+        {
+            content: "\e0B8";
+            font-size: 14pt;
+            font-weight: bold;
+        }
+
+        .glyphicon-beta
+        {
+            width: 14px;
+            height: 14px;
+        }
+
         </style>
 
         <script>
@@ -87,6 +100,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new_password']))
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> <?=$user['name']?><span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li class="active"><a href="userSettings.php"><span class="glyphicon glyphicon-cog"></span> Account Settings</a></li>
+                                    <li><a href="https://github.com/Queuecumber/diet-tracker/issues"><span class="glyphicon glyphicon-beta"></span> Report Issue</a></li>
+                                    <li class="divider"></li>
                                     <li><a href="logOff.php"><span class="glyphicon glyphicon-off"></span> Log Off</a></li>
                                 </ul>
                             </li>
