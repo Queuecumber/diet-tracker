@@ -1,0 +1,128 @@
+.nutritionfacts {
+	border: 1px solid black;
+	padding: 3px;
+	color: black;
+	background-color: white;
+	width: 207px;
+}
+.nutritionfacts a {
+	text-decoration: none;
+	outline: none;
+	color: black;
+	background-color: white;
+}
+.nftitle {
+	font-family: Franklin Gothic Heavy, Helvetica Black, Arial Black, Helvetica, sans-serif;
+	font-size: 13pt;
+}
+.nfservingsize {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+	padding-top: 1px;
+}
+.nfnutrient {
+	font-family: Helvetica Black, Arial Black, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+	padding-top: 4px;
+//	letter-spacing: -1px;
+}
+.nfnutrientcontent {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+}
+.nfright {
+	position: absolute;
+	padding-top: 1px;
+	width: 207px;
+	text-align: right;
+}
+.nfpercent {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+}
+.nflabel {
+	font-family: Helvetica Black, Arial Black, Helvetica, Arial, sans-serif;
+	font-size: 7pt;
+}
+.nfvit {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+	padding-top: 4px;
+}
+.nfvitright {
+	position: absolute;
+	padding-top: 0;
+	width: 207px;
+	text-align: right;
+}
+.nfnutrientsubgroup {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+	padding-left: 10px;
+	padding-top: 2px;
+}
+.nfsubright {
+	font-family: Helvetica Black, Arial Black, Helvetica, Arial, sans-serif;
+	position: absolute;
+	margin-top: 0px;
+	width: 197px;
+	text-align: right;
+	line-height: 1em;
+	overflow: hidden;
+}
+.nfbullet {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 10pt;
+	text-align: center;
+	width: 207px;
+	position: absolute;
+	margin-top: 0px;
+	line-height: 1em;
+	overflow: hidden;
+}
+.nfmisc {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 7pt;
+	padding-top: 1px;
+}
+.nfingredients, .nfallergen {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+	padding-top: 5px;
+	width: 207px;
+	padding-bottom: 10px;
+}
+.nfmanufacturer {
+	font-family: Helvetica Regular, Helvetica, Arial, sans-serif;
+	font-size: 8pt;
+	text-align: center;
+	width: 207px;
+	padding-top: 30px;
+}
+table.nfmisc {
+	border: 0px solid black;
+}
+table.nfmisc tr {
+	border: 0px solid black;
+}
+table.nfmisc td {
+	border: 0px solid black;
+}
+.nfthickrule {
+	padding-top: 1px;
+	border-bottom: 7px solid black;
+}
+.nfrule {
+	padding-top: 1px;
+	border-bottom: 3px solid black;
+}
+.nfhairlinerule {
+	padding-top: 1px;
+	border-bottom: 1px solid black;
+}
+.nfsubhairlinerule {
+	padding-top: 1px;
+	margin-left: 10px;
+	padding-left: 10px;
+	border-bottom: 1px solid black;
+}
