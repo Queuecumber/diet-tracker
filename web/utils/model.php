@@ -45,6 +45,49 @@ function getMealsForUser($email, $date)
     return $meals;
 }
 
+function getUserHistory($email)
+{
+    $res = querySymbolic('meal', [ 'user' => $email ], 'order by date desc');
+    $meals = extractArray($res);
+
+    for($i = 0; $i < count($meals); $i++)
+    {
+        $ts = $meals[$i]['date'];
+
+        $meals[$i]['date'] = date('Y-m-d H:i:s', strtotime($ts . ' UTC'));
+    }
+
+    $histories = [];
+    foreach($meals as $m)
+    {
+        $day = explode(' ', $m['date'])[0];
+
+        if(count($histories) != 0)
+        {
+            if(end($histories)['date'] != $day)
+            {
+                $histories[] = [
+                    'date' => $day,
+                    'calories' => floatval($m['amount'])
+                ];
+            }
+            else
+            {
+                end($histories)['calories'] += floatval($m['amount']);
+            }
+        }
+        else
+        {
+            $histories[] = [
+                'date' => $day,
+                'calories' => floatval($m['amount'])
+            ];
+        }
+    }
+
+    return $histories;
+}
+
 function getWeightsForUser($email)
 {
     $res = querySymbolic('weight_measurement', [
@@ -58,6 +101,7 @@ function getWeightsForUser($email)
         $ts = $weights[$i]['date'];
 
         $weights[$i]['date'] = date('Y-m-d H:i:s', strtotime($ts . ' UTC'));
+        $weights[$i]['amount'] = floatval($weights[$i]['amount']);
     }
 
     return $weights;
