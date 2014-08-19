@@ -4,6 +4,8 @@ include('utils/checkUser.php');
 include('utils/model.php');
 
 $user = getUser($seshUser);
+$meals = getUserHistory($user['email']);
+$weights = getWeightsForUser($user['email']);
 
 ?>
 <!DOCTYPE html>
@@ -33,12 +35,161 @@ $user = getUser($seshUser);
             text-align: center;
         }
 
+        .line
+        {
+            stroke-width: 4px;
+            fill: none;
+        }
+
+        .calorie-target
+        {
+            stroke: seagreen;
+
+        }
+
+        .meal-line
+        {
+            stroke: firebrick;
+        }
+
+        .weight-line
+        {
+            stroke: steelblue;
+        }
+
+        .axis path, .axis line
+        {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .legend-label
+        {
+            fill: black;
+            alignment-baseline: hanging;
+        }
+
+        #legend
+        {
+            margin-left: 50px;
+            padding: 2px;
+
+            border-style: solid;
+            border-width: 2px;
+            border-color: black;
+            border-radius: 5px;
+        }
+
         </style>
 
         <script>
 
+        var calorieTarget = <?= $user['calorie_target']; ?>;
+
+        var meals = <?= json_encode($meals); ?>;
+
+        var weights = <?= json_encode($weights); ?>;
+
         $(document).ready(function ()
         {
+            var width = 900;
+            var height = 500;
+
+            var margin = {top: 20, left: 60, bottom: 30, right: 20};
+
+            var scaleX = d3.time.scale()
+                            .domain([
+                                d3.min(meals, function (m) { return new Date(m.date); }),
+                                d3.max(meals, function (m) { return new Date(m.date); })
+                            ])
+                            .range([0, width]);
+
+            var scaleY = d3.scale.linear()
+                            .domain([0, Math.max(d3.max(meals, function (m) { return m.calories; }), calorieTarget)])
+                            .range([height, 0]);
+
+            var xAxis = d3.svg.axis()
+                .scale(scaleX)
+                .orient('bottom');
+
+            var yAxis = d3.svg.axis()
+                .scale(scaleY)
+                .orient('left');
+
+            var graph = d3.select('#graph')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+
+            var calorieTargetLine = d3.svg.line()
+                                        .x(function (d) { return d.x; })
+                                        .y(function (d) { return scaleY(d.y); })
+                                        .interpolate('linear');
+
+            graph.append('path')
+                .attr('class', 'line calorie-target')
+                .attr('d', calorieTargetLine([{x: 0, y: calorieTarget}, {x: width, y: calorieTarget}]));
+
+            var mealLine = d3.svg.line()
+                .x(function (d) { return scaleX(new Date(d.date)); })
+                .y(function (d) { return scaleY(d.calories); })
+                .interpolate('linear');
+
+            graph.append('path')
+                .attr('class', 'line meal-line')
+                .attr('d', mealLine(meals));
+
+            graph.append('g')
+                .attr('class', 'axis')
+                .attr('transform', 'translate(0, ' + height + ')')
+                .call(xAxis);
+
+            graph.append('g')
+                .attr('class', 'axis')
+                .call(yAxis)
+                .append('text')
+                .attr('y', -15)
+                .attr('x', -5)
+                .attr('dy', '.71em')
+                .style('text-anchor', 'end')
+                .text('Calories');
+
+            var weightScaleX = d3.time.scale()
+                .domain([
+                    d3.min(weights, function (w) { return new Date(w.date); }),
+                    d3.max(weights, function (w) { return new Date(w.date); })
+                ])
+                .range([0, width]);
+
+            var weightScaleY = d3.scale.linear()
+                .domain([0, d3.max(weights, function (w) { return w.amount; })])
+                .range([height, 0]);
+
+            var weightLine = d3.svg.line()
+                .x(function (d) { return weightScaleX(new Date(d.date)); })
+                .y(function (d) { return weightScaleY(d.amount); })
+                .interpolate('linear');
+
+            graph.append('path')
+                .attr('class', 'line weight-line')
+                .attr('d', weightLine(weights));
+
+            var weightAxis = d3.svg.axis()
+                .scale(weightScaleY)
+                .orient('right');
+
+            graph.append('g')
+                .attr('class', 'axis')
+                .call(weightAxis)
+                .append('text')
+                .attr('y', -15)
+                .attr('x', 85)
+                .attr('dy', '.71em')
+                .style('text-anchor', 'end')
+                .text('Weight (lbs)');
 
         });
 
@@ -81,7 +232,19 @@ $user = getUser($seshUser);
             </nav>
         </header>
         <main>
-            <div id="graph"></div>
+            <h1>History <small>Calorie Target, Daily Calories, and Weight vs Time</small></h1>
+            <div id="graph-container">
+                <svg id="graph"></svg>
+                <br/>
+                <svg id="legend" width="150" height="90">
+                    <line class="calorie-target line" x1="0" y1="5" x2="200" y2="5"/>
+                    <text class="legend-label" x="0" y="9">Calorie Target</text>
+                    <line class="meal-line line" x1="0" y1="35" x2="200" y2="35"/>
+                    <text class="legend-label" x="0" y="39">Daily Calories</text>
+                    <line class="weight-line line" x1="0" y1="65" x2="200" y2="65"/>
+                    <text class="legend-label" x="0" y="69">Weight</text>
+                </svg>
+            </div>
         </main>
     </body>
 </html>
