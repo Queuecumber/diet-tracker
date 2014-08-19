@@ -30,6 +30,7 @@ foreach($meals as $m)
         <title>Daily Report</title>
 
         <link rel="stylesheet" href="lib/bootstrap-3.2.0-dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="nutritionfacts.css"/>
         <script src="lib/jquery-2.1.1.min.js"></script>
         <script src="lib/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 
@@ -93,6 +94,26 @@ foreach($meals as $m)
             $('#delete-meal-modal').on('hide.bs.modal', function ()
             {
                 $('#delete-meal-modal').find('#delete-meal-submit').off();
+            });
+
+            $('.meal-controls').find('.nutrition-facts').on('click', function ()
+            {
+                var mid = $(this).closest('section').find('.form-delete-meal').find('input[type=hidden]').val();
+                var time = $(this).closest('h2').text();
+
+                $.post('nutritionLabel.php', { meal_id: mid }, function (html)
+                {
+                    var html = $(html);
+                    var label = html.filter('div.nutritionfacts');
+
+                    label.find('a').removeAttr('href');
+                    label.find('img').attr('src', 'nutritionFacts.jpg');
+
+                    $('#nutrition-meal-modal').find('.modal-title').text('Nutrition Facts for Meal at ' + time);
+                    $('#nutrition-meal-modal').find('.modal-body').html(label);
+
+                    $('#nutrition-meal-modal').modal({show: true});
+                }, 'html');
             });
         });
 
@@ -172,6 +193,7 @@ foreach($meals as $m)
                                     <h2>
                                         <?= date("g:i a", strtotime($m['date'])) ?>
                                         <span class="meal-controls">
+                                            <button class="nutrition-facts btn btn-sm btn-default"><span class="glyphicon glyphicon-list-alt"></span></button>
                                             <button class="edit-meal btn btn-sm btn-default"><span class="glyphicon glyphicon-edit"></span></button>
                                             <button class="delete-meal btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
                                         </span>
@@ -273,6 +295,22 @@ foreach($meals as $m)
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                             <button typoe="button" class="btn btn-danger" id="delete-meal-submit">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="nutrition-meal-modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span><span class="sr-only"Close</span></button>
+                            <h4 class="modal-title"></h4>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button typoe="button" class="btn btn-primary" data-dismiss="modal">Done</button>
                         </div>
                     </div>
                 </div>
