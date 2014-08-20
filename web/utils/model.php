@@ -341,8 +341,6 @@ function getNutritionForMeal($meal_id)
 
     $nutrition['calories'] = floatval($minfo[0]['amount']);
 
-    var_dump($nutrition);
-
     return $nutrition;
 }
 
