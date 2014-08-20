@@ -264,6 +264,18 @@ function extractNutrition($food, $metric)
         }
     }
 
+    $required = ["totalFat", "saturatedFat", "transFat", "cholesterol",
+    "sodium", "carb", "fiber", "sugar", "protein", "vitA",
+    "vitC", "calcium", "iron"];
+
+    foreach($required as $rn)
+    {
+        if(!array_key_exists($rn, $nutrition))
+        {
+            $nutrition[$rn] = 0;
+        }
+    }
+
     return $nutrition;
 }
 
