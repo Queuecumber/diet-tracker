@@ -341,6 +341,37 @@ function getNutritionForMeal($meal_id)
 
     $nutrition['calories'] = floatval($minfo[0]['amount']);
 
+    // extract gram amounts
+    $nutrition['gramServingSize'] = 0;
+    foreach($minfo as $info)
+    {
+        $metric = $info['metric'];
+        $metricArray = str_split($metric);
+
+        $gamountStr = '';
+        $keepParsing = false;
+        for($i = count($metricArray) - 1; $i >= 0; $i--)
+        {
+            if($keepParsing)
+            {
+                if(is_numeric($metricArray[$i]) || $metricArray[$i] == '.')
+                {
+                    $gamountStr = $metricArray[$i] . $gamountStr;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else if($metricArray[$i] == 'g')
+            {
+                $keepParsing = true;
+            }
+        }
+
+        $nutrition['gramServingSize'] += floatval($gamountStr);
+    }
+
     return $nutrition;
 }
 

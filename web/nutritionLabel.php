@@ -11,8 +11,7 @@ $labelUrl = "http://www.rufenacht.com/webapps/shopncook/nutritionFacts.jsp";
 $nutritionData = [
     'isShort' => false,
     'quantityServingSize' => 1,
-    'unitServingSize' => 'serving',
-    'gramServingSize' => 1,
+    'unitServingSize' => 'meal',
     'standardUnit' => 'g',
     'isPercent' => false
 ];
