@@ -320,8 +320,28 @@ function getNutritionForMeal($meal_id)
 
     $minfo = extractArray($res);
 
+    $scaleNutrition = function (&$nval, $nkey, $ss)
+    {
+        $nval *= $ss;
+    };
+
     $nutrition = extractNutrition($minfo[0], $minfo[0]['metric']);
+    array_walk($nutrition, $scaleNutrition, floatval($minfo[0]['value']));
+
+    for($i = 1; $i < count($minfo); $i++)
+    {
+        $n = extractNutrition($minfo[$i], $minfo[$i]['metric']);
+        array_walk($n, $scaleNutrition, floatval($minfo[$i]['value']));
+
+        foreach($nutrition as $name => $v)
+        {
+            $nutrition[$name] = $v + $n[$name];
+        }
+    }
+
     $nutrition['calories'] = floatval($minfo[0]['amount']);
+
+    var_dump($nutrition);
 
     return $nutrition;
 }
