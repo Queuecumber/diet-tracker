@@ -310,4 +310,20 @@ function dropFoodFromMeal($food_id, $meal_id, $metric, $value)
     ]);
 }
 
+function getNutritionForMeal($meal_id)
+{
+    $res = querySymbolic([
+        'meal',
+        ['food_report', 'meal_id', 'meal'],
+        ['food', 'food', 'ndb_no']
+    ], ['meal_id' => $meal_id]);
+
+    $minfo = extractArray($res);
+
+    $nutrition = extractNutrition($minfo[0], $minfo[0]['metric']);
+    $nutrition['calories'] = floatval($minfo[0]['amount']);
+
+    return $nutrition;
+}
+
 ?>
