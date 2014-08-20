@@ -1,5 +1,74 @@
 <?php
 
+// Native CSV parsing in PHP sucks and can't be used in real world scenarios. Borrowed this one from:
+// http://us1.php.net/manual/en/function.str-getcsv.php#109948
+function csvToArray($fileContent,$escape = '\\', $enclosure = '"', $delimiter = ',')
+{
+    $lines = array();
+    $fields = array();
+
+    if($escape == $enclosure)
+    {
+        $escape = '\\';
+        $fileContent = str_replace(array('\\',$enclosure.$enclosure,"\r\n","\r"),
+                    array('\\\\',$escape.$enclosure,"\\n","\\n"),$fileContent);
+    }
+    else
+        $fileContent = str_replace(array("\r\n","\r"),array("\\n","\\n"),$fileContent);
+
+    $nb = strlen($fileContent);
+    $field = '';
+    $inEnclosure = false;
+    $previous = '';
+
+    for($i = 0;$i<$nb; $i++)
+    {
+        $c = $fileContent[$i];
+        if($c === $enclosure)
+        {
+            if($previous !== $escape)
+                $inEnclosure ^= true;
+            else
+                $field .= $enclosure;
+        }
+        else if($c === $escape)
+        {
+            $next = $fileContent[$i+1];
+            if($next != $enclosure && $next != $escape)
+                $field .= $escape;
+        }
+        else if($c === $delimiter)
+        {
+            if($inEnclosure)
+                $field .= $delimiter;
+            else
+            {
+                //end of the field
+                $fields[] = $field;
+                $field = '';
+            }
+        }
+        else if($c === "\n")
+        {
+            $fields[] = $field;
+            $field = '';
+            $lines[] = $fields;
+            $fields = array();
+        }
+        else
+            $field .= $c;
+        $previous = $c;
+    }
+    //we add the last element
+    if(true || $field !== '')
+    {
+        $fields[] = $field;
+        $lines[] = $fields;
+    }
+    return $lines;
+}
+
+
 function extractSearch($search)
 {
     $ndbUrl = "http://ndb.nal.usda.gov/ndb/foods";
@@ -74,14 +143,8 @@ function extractFood($ndb_no)
 
 function parseReport($reportString)
 {
-    $rows = str_getcsv($reportString, "\n");
-    $csvArray = [];
-    foreach($rows as $r)
-    {
-        $csvArray[] = str_getcsv($r);
-    }
-
-    return $csvArray;
+    $rows = csvToArray($reportString);
+    return $rows;
 }
 
 function extractMetrics($food)
@@ -130,6 +193,78 @@ function extractCalories($food, $metric, $amount)
     $calPerServing = floatval($csvArray[$rowNo][$colNo]);
 
     return floatval($amount) * $calPerServing;
+}
+
+function extractNutrition($food, $metric)
+{
+    $allMetrics = extractMetrics($food);
+    $metricCol = array_search($metric, $allMetrics) + 3;
+
+    $reportUrl = $food['usda_report_url'];
+    $csvContent = file_get_contents($reportUrl);
+
+    $csvArray = parseReport($csvContent);
+
+    $nutrition = [];
+    for($i = 0; $i < count($csvArray); $i++)
+    {
+        switch($csvArray[$i][0])
+        {
+            case "Total lipid (fat)":
+                $nutrition["totalFat"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Fatty acids, total saturated":
+                $nutrition['saturatedFat'] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Fatty acids, total trans":
+                $nutrition["transFat"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Cholesterol":
+                $nutrition["cholesterol"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Sodium, Na":
+                $nutrition["sodium"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Carbohydrate, by difference":
+                $nutrition["carb"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Fiber, total dietary":
+                $nutrition["fiber"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Sugars, total":
+                $nutrition["sugar"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Protein":
+                $nutrition["protein"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Vitamin A, IU":
+                $nutrition["vitA"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Vitamin C, total ascorbic acid":
+                $nutrition["vitC"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Calcium, Ca":
+                $nutrition["calcium"] = floatval($csvArray[$i][$metricCol]);
+                break;
+
+            case "Iron, Fe":
+                $nutrition["iron"] = floatval($csvArray[$i][$metricCol]);
+                break;
+        }
+    }
+
+    return $nutrition;
 }
 
 ?>
