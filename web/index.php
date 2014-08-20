@@ -69,6 +69,8 @@ foreach($meals as $m)
         .nutritionfacts
         {
             box-sizing: content-box;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         </style>
